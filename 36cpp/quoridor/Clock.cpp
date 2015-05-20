@@ -15,11 +15,7 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#ifdef WIN32
-#include <mmsystem.h>
-#else
 #include <time.h>
-#endif
 
 #pragma hdrstop
 
@@ -29,10 +25,6 @@
 
 unsigned long get_timestamp()
 {
-#ifdef WIN32
-    return timeGetTime();
-#else
     return 1000 * time(0);
-#endif
 }
 

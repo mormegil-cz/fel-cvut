@@ -1,6 +1,6 @@
 # Homeworks and school projects from FEL ČVUT
 
-This is a repository of my school projects and homeworks during my study of [FEL ČVUT](http://www.fel.cvut.cz/).
+This is a repository of my school projects and homeworks during my study at [FEL ČVUT](http://www.fel.cvut.cz/).
 
 License
 -------

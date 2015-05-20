@@ -137,9 +137,17 @@ public:
                         break;
 
                 case MH_MOVE:
-                        if (!(params.directions.jump >>= 1)) {
+                    int j;
+                    j = (int)params.directions.jump;
+                    j >>= 1;
+                    params.directions.jump = (Direction)j;
+                        if (!j) {
                                 params.directions.jump = RIGHT;
-                                if (!(params.directions.move >>= 1)) {
+                                int m;
+                                m = (int)params.directions.move;
+                                m >>= 1;
+                                params.directions.move = (Direction)m;
+                                if (!m) {
                                         type = MH_HBARR;
                                         params.coords.x = BOARD_SIZE-2;
                                         params.coords.y = BOARD_SIZE-1;
