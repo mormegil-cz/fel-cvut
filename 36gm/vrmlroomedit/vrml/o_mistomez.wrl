@@ -1,0 +1,186 @@
+#VRML V2.0 utf8
+WorldInfo {
+	title "A small test"
+	info [
+		"This file has been created with SceneAutoBuilder v1.1 (c) Petr Kadlec, 2002-2003",
+		"Compiled at Mon Feb 10 18:03:36 CET 2003, used scene description file: 'examples/s_mistomez.xml'",
+		"Solution score: 0.0"
+	]
+}
+Background {
+	groundColor [
+		0.3 0.3 0.0
+	]
+	skyColor [
+		0.0 0.0 1.0,
+		0.0 0.0 0.2
+	]
+	skyAngle [
+		3.14159
+	]
+}
+PointLight {
+	intensity 0.0
+	ambientIntensity 1.0
+}
+Transform {
+	children [
+		DEF C2 Group {
+			children [
+				Transform {
+					translation 0.5 0.5 0.5
+					children [
+						Shape {
+							appearance Appearance {
+								material Material {
+									diffuseColor 0.21 0.7 0.52
+								}
+							}
+							geometry Box {
+								size 1.0 1.0 1.0
+							}
+						}
+					]
+				}
+				Transform {
+					translation 0.5 0.5 1.5
+					children [
+						Shape {
+							appearance Appearance {
+								material Material {
+									diffuseColor 0.21 0.7 0.52
+								}
+							}
+							geometry Box {
+								size 1.0 1.0 1.0
+							}
+						}
+					]
+				}
+				Transform {
+					translation 0.5 0.5 2.5
+					children [
+						Shape {
+							appearance Appearance {
+								material Material {
+									diffuseColor 0.21 0.7 0.52
+								}
+							}
+							geometry Box {
+								size 1.0 1.0 1.0
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
+Transform {
+	translation 1.0 0.0 0.0
+	children [
+		DEF C1 Group {
+			children [
+				Transform {
+					translation 0.5 0.5 0.5
+					children [
+						Shape {
+							appearance Appearance {
+								material Material {
+									diffuseColor 0.44 0.9 0.49
+								}
+							}
+							geometry Box {
+								size 1.0 1.0 1.0
+							}
+						}
+					]
+				}
+				Transform {
+					translation 0.5 0.5 1.5
+					children [
+						Shape {
+							appearance Appearance {
+								material Material {
+									diffuseColor 0.44 0.9 0.49
+								}
+							}
+							geometry Box {
+								size 1.0 1.0 1.0
+							}
+						}
+					]
+				}
+				Transform {
+					translation 0.5 0.5 2.5
+					children [
+						Shape {
+							appearance Appearance {
+								material Material {
+									diffuseColor 0.44 0.9 0.49
+								}
+							}
+							geometry Box {
+								size 1.0 1.0 1.0
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
+Transform {
+	translation 2.0 0.0 0.0
+	children [
+		DEF C3 Group {
+			children [
+				Transform {
+					translation 0.5 0.5 0.5
+					children [
+						Shape {
+							appearance Appearance {
+								material Material {
+									diffuseColor 0.88 0.67 0.95
+								}
+							}
+							geometry Box {
+								size 1.0 1.0 1.0
+							}
+						}
+					]
+				}
+				Transform {
+					translation 0.5 0.5 1.5
+					children [
+						Shape {
+							appearance Appearance {
+								material Material {
+									diffuseColor 0.88 0.67 0.95
+								}
+							}
+							geometry Box {
+								size 1.0 1.0 1.0
+							}
+						}
+					]
+				}
+				Transform {
+					translation 0.5 0.5 2.5
+					children [
+						Shape {
+							appearance Appearance {
+								material Material {
+									diffuseColor 0.88 0.67 0.95
+								}
+							}
+							geometry Box {
+								size 1.0 1.0 1.0
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

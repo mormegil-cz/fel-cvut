@@ -1,0 +1,33 @@
+Tento archiv obsahuje nasledujici:
+
+PRIKLAD1\
+	TestUnit.pas ... ukazkovy priklad
+	TestUnit.hlp ... help soubor vyrobeny z programem vytvorenych souboru
+PRIKLAD2\
+	Archiver.pas ... realna komponenta
+	Archiver.hlp ... a prislusny vytvoreny help soubor
+PRIKLAD3\
+	DXGraphics.pas ... slozitejsi realna komponenta
+	DXGraphics.hlp ... a prislusny vytvoreny help soubor
+
+ACC_NONE.BMP, ACC_RO.BMP, ACC_WO.BMP,
+HIERLINE.BMP, VIS_AUTO.BMP, VIS_PBSH.BMP,
+VIS_PROT.BMP ... ikonky potrebne pro kompilaci help souboru
+
+HelpCreator_cl.exe ... spustitelna verze programu pro prikazovou radku
+
+HelpCreator.cfg, HelpCreator.dof,
+HelpCreator.dpr, HelpCreator.res ... soubory projektu do Delphi
+
+HCBackEnd.pas     ... jednotka Back end - generovani RTF a HPJ textu
+HCEngine.pas      ... nejdulezitejsi jednotka - syntakticka analyza, rizeni behu
+HCInput.pas       ... vstupni cast - cteni zdrojovych souboru
+HCLexAnalyser.pas ... lexikalni analyzator
+HCMain.dfm        ... hlavni dialog
+HCMain.pas        ... main program, obsluha hlavniho dialog
+HCSymTable.pas    ... tabulka symbolu
+HCUnitStack.pas   ... zasobnik - Unit stack
+
+Zpráva.rtf ... zprava o semestralni praci
+
+FILES.TXT ... tento soubor

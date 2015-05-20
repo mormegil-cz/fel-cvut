@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML LANG=en>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html">
+<TITLE>ILS Demonstration</TITLE>
+</HEAD>
+<BODY>
+
+<H1>ILS Demonstration</H1>
+
+<TABLE SUMMARY="Language Selection" WIDTH="100%"><TR>
+<TD><IMG SRC="media/en.png" WIDTH=32 HEIGHT=20 ALT="English"></TD>
+<TD><A HREF="index.html"><IMG SRC="media/cs.png" WIDTH=32 HEIGHT=20 ALT="Cesky"></A></TD>
+</TR></TABLE>
+
+<H2>ILS Purpose</H2>
+<P>ILS (<I>Instrument Landing System</I>) is a system of radio devices used by
+aircrafts flying in a non-visual meteorological conditions when on the final part of
+the landing. This system helps pilots to navigate their airplanes towards the runway
+equipped with ILS.
+
+<H2>ILS Functionality</H2>
+<P>The ILS consists of two electronic beams (i.e. transmitters which transmit
+highly directional radio emissions): one provides horizontal guidance (the so-called
+localizer); the other, vertical guidance (the so-called glideslope). In addition to
+these beams, a DME device is usually placed at the runway threshold. Moreover, two
+(or three) marker beacons are normally used, which provide additional information about
+distance from runway threshold.
+<P>The localizer transmitter emits a radio beam in direction of runway centerline.
+The glidepath transmitter emits a radio beam in the same direction, but the beam is
+elevated at a glidepath angle from ground (usually 3°). The DME provides precise distance
+information from the runway threshold. The marker beacons are antenna arrays which emit
+a vertical beam to indicate the pilot that his airplane is at a specific point. Ordinarily,
+there are two marker beacons associated with an ILS, the OM (<I>Outer Marker</I>) and MM
+(<I>Middle Marker</I>). Locations with a Category II and III ILS also have an <I>Inner
+Marker</I> (IM). When an aircraft passes over a marker, a light will light in the cabin
+and pilot will hear a specific sound pattern:
+<TABLE SUMMARY="Marker indications">
+<THEAD><TR>
+<TD><B>Marker</B></TD><TD><B>Sound code</B></TD><TD><B>Light</B></TD>
+</TR></THEAD><TBODY>
+<TR><TD>OM</TD><TD>&#150;&nbsp;&#150;&nbsp;&#150;</TD><TD>Blue</TD></TR>
+<TR><TD>MM</TD><TD>.&nbsp;&#150;&nbsp;.&nbsp;&#150;</TD><TD>Amber</TD></TR>
+<TR><TD>IM</TD><TD>.&nbsp;.&nbsp;.&nbsp;.</TD><TD>White</TD></TR>
+</TBODY></TABLE>
+
+
+<H2>Using ILS</H2>
+<P>When pilot wants to use ILS, he tunes its localizer frequency on the primary NAV receiver.
+The glideslope frequency is fixedly paired with the localizer frequency, so it is
+tuned automatically. Both needles on the HSI now display the deviation of the aircraft
+from the extended runway centerline and glideslope. The DME receiver displays distance
+to the runway threshold. Pilot should fly "towards the needles" to position the airplane
+on the best approach path. The marker beacons have fixed frequencies, so the pilot
+does not tune them at all. (Moreover, it often happens that aircraft receives marker
+beacon's signal in another phase of flight, when by chance overflying some marker
+beacon.)
+
+<H2>ILS Chart</H2>
+<P><TABLE WIDTH="100%"><TR>
+<TD WIDTH=124>
+<A HREF="media/ils.png"><IMG SRC="media/s_ils.png" WIDTH=124 HEIGHT=175 ALT="Click to enlarge the ILS chart"></A>
+</TD>
+<TD>Here is an example of an approach chart for an ILS-equipped runway.
+The chart contains all required frequencies, courses and other information required for
+ILS approach.</TD>
+</TR></TABLE>
+
+<H2>ILS Demonstration</H2>
+<P>Using this applet you can try what a pilot sees on an ILS approach. Press arrow keys to
+turn the airplane, press space to move the airplane a bit forward. Try to navigate the airplane
+to the runway.
+<P>You can also click with a left mouse button on the upper map to position the airplane, or
+click with the right mouse button to turn the airplane towards the selected point. On the lower
+map, you can click with the left button to change the altitude of the airplane, or with the
+right button to turn the airplane's nose up or down.
+<P>The instruments at the bottom are (from the left):
+<UL>
+<LI><B>Horizontal Situation Indicator</B> (HSI), which indicates your position relative to
+the ILS beams and includes a (gyro-) compass</LI>
+<LI>(Barometric) <B>Altimeter</B>, which indicates your current altitude in feet above mean
+sea level (if properly set). It has three needles: The biggest one shows hundreds, the short
+one shows thousands, and the long thin one with a triangle on one end shows tens of thousands
+of feet.</LI>
+<LI><B>Marker indicators</B> - The respective light is lit when the airplane is flying over
+a marker.</LI>
+<LI><B>DME display</B>, which shows your current distance from the DME transmitter (in nautical
+miles, 1&nbsp;nm&nbsp;=&nbsp;1852&nbsp;meters&nbsp;=&nbsp;1.15&nbsp;statute mile). (In reality,
+the DME display usually also displays a speed of the airplane, and sometimes also an estimate
+of time required to reach the navaid.)</LI>
+</UL>
+<P>
+<APPLET
+  CODE     = "ils/ILSDemo.class"
+  NAME     = "ILSDemo"
+  WIDTH    = 532
+  HEIGHT   = 556
+  HSPACE   = 0
+  VSPACE   = 0
+  ALIGN    = top
+>
+<NOAPPLET>
+<B>Unfortunately, your browser is not capable of displaying applets, or you have forbidden it.
+If you want to try the ILS demonstration, you have to enable Java applets in your browser.</B>
+</NOAPPLET>
+</APPLET>
+
+<HR>
+<FONT SIZE=-5>
+The page and Java code are Copyright &copy; <A HREF="mailto:kadlecp2@fel.cvut.cz">Petr Kadlec</A>, 2001<BR>
+The approach chart is &copy; Air Navigation Services of the C.R.
+</FONT>
+</BODY>
+</HTML>

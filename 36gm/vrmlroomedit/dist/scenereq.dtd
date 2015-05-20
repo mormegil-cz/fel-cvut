@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!--
+	Scene Requirements DTD v1.0
+	(C) 2002, Petr Kadlec (kadlecp2@fel.cvut.cz)
+-->
+
+
+<!-- "scenereq" is the parent element -->
+<!ELEMENT scenereq (description?,((platform+)|allplatform),(reqroom|allowroom)+,constraint*)>
+<!ATTLIST scenereq
+	library		CDATA	#REQUIRED
+	xsize		CDATA	#REQUIRED
+	ysize		CDATA	#REQUIRED
+	zsize		CDATA	'1'
+	badscore	CDATA	#IMPLIED
+	trashscore	CDATA	#IMPLIED
+	goodscore	CDATA	'0'
+>
+
+
+<!-- "description" contains pure textual description of the scene requirements -->
+<!ELEMENT description (#PCDATA)*>
+
+
+<!-- "platform" contains matrix of platform specification for the scene -->
+<!ELEMENT platform (platformrow+)>
+<!ATTLIST platform level CDATA '0'>
+
+
+<!-- "platformrow" specifies a single row of platform matrix -->
+<!ELEMENT platformrow (#PCDATA)*>
+
+
+<!-- "allplatform" specifies the whole platform -->
+<!ELEMENT allplatform EMPTY>
+
+
+<!-- "reqroom" requires a room to be present -->
+<!ELEMENT reqroom EMPTY>
+<!ATTLIST reqroom
+	name	CDATA	#REQUIRED
+	min	CDATA	'1'
+	max	CDATA	#IMPLIED
+	score	CDATA	#IMPLIED
+>
+
+
+<!-- "allowroom" allows a room to be present -->
+<!ELEMENT allowroom EMPTY>
+<!ATTLIST allowroom
+	name	CDATA	#REQUIRED
+	score	CDATA	'0'
+>
+
+
+<!-- "constraint" provides one constraint for the scene -->
+<!ELEMENT constraint EMPTY>
+<!ATTLIST constraint
+	type		CDATA	#REQUIRED
+	function	CDATA	#REQUIRED
+	value		CDATA	#REQUIRED
+	score		CDATA	#IMPLIED
+>

@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+ "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+  <meta name="author" content="Petr Kadlec">
+  
+  <title>Stavebnice komplexních 3D scén - formát knihovny místností</title>
+
+  <link rel=StyleSheet href="gm.css" type="text/css" title="Stylesheet">  
+</head>
+<body lang=cz>
+<h1>Stavebnice komplexních 3D scén &ndash; formát knihovny místností</h1>
+<p>Knihovna objektů je ve formátu XML (<a href="libdtd.htm">DTD tohoto formátu</a>).
+Jednotlivé tagy mají následující význam:
+
+<dl class=tags>
+
+<dt class=tag id=library>library</dt>
+<dd>Hlavní tag, ve kterém je celá knihovna. Tag obsahuje
+  <a href="#description" class=tag>description</a>?, <a href="#room" class=tag>room</a>*.
+  Atributy:
+  <dl class=atts>
+   <dt class=attr>URL</dt>
+   <dd>URL VRML knihovny, kterou popisuje tento soubor. Povinný atribut.</dd>
+   <dt class=attr>xscale</dt>
+   <dd>Měřítko knihovny (na ose x). Udává velikost jednoho políčka sítě. Implicitní hodnota 1.</dd>
+   <dt class=attr>yscale</dt>
+   <dd>Měřítko knihovny na ose y. Implicitní hodnota rovna <code class=attr>xscale</code>.</dd>
+   <dt class=attr>zscale</dt>
+   <dd>Měřítko knihovny na ose z. Implicitní hodnota rovna <code class=attr>xscale</code>.</dd>
+  </dl>
+</dd>
+
+<dt class=tag id=description>description</dt>
+<dd>V&nbsp;tomto tagu mohou být libovolná textová data. Slouží k&nbsp;uložení nějakého
+  popisu této knihovny místností, resp. místnosti.</dd>
+
+<dt class=tag id=room>room</dt>
+<dd>Tento tag obsahuje popis jedné místnosti. Tag obsahuje
+  <a href="#description" class=tag>description</a>?, ((<a href="#platform" class=tag>platform</a>+) |
+  <a href="#allplatform" class=tag>allplatform</a>), <a href="#portal" class=tag>portal</a>*,
+  <a href="#constraint" class=tag>constraint</a>*.
+  <dl class=atts> 
+   <dt class=attr>object</dt>
+   <dd>Identifikátor objektu ve VRML souboru, který obsahuje tuto místnost. Povinný atribut.</dd>
+   <dt class=attr>name</dt>
+   <dd>Identifikátor této místnosti (v rámci tohoto programu). V&nbsp;případě neuvedení
+   tohoto atributu je identifikátor převzat z&nbsp;atributu <code class=attr>object</code>.</dd>
+   <dt class=attr>group</dt>
+   <dd>Identifikátor skupiny, do které tato místnost patří. V&nbsp;případě neuvedení
+   tohoto atributu je identifikátor převzat z&nbsp;atributu <code class=attr>name</code>.</dd>
+   <dt class=attr>xsize</dt>
+   <dd>Délka půdorysu této místnosti. Povinný atribut.</dd>
+   <dt class=attr>ysize</dt>
+   <dd>Šířka půdorysu této místnosti. Povinný atribut.</dd>
+   <dt class=attr>zsize</dt>
+   <dd>Počet pater této místnosti. Implicitní hodnota 1.</dd>
+  </dl>
+</dd>  
+
+<dt class=tag id=platform>platform</dt>
+<dd>Tento tag obsahuje definici půdorysu jednoho patra místnosti. Tag obsahuje
+  <a href="#platformrow" class=tag>platformrow</a>*.
+  Atributy:
+  <dl class=atts>
+    <dt class=attr>level</dt>
+    <dd>Patro místnosti, které tento půdorys popisuje. Implicitní hodnota 0.</dd>
+  </dl>
+</dd>
+
+<dt class=tag id=platformrow>platformrow</dt>
+<dd>Tento tag obsahuje popis jednoho řádku půdorysu jednoho patra místnosti.
+  Tag obsahuje textová data, pro každé políčko čtvercové sítě jeden znak. Tento
+  znak může být jeden ze znaků <code class=text>x, X, 1, #, *, +</code>, pokud
+  toto políčko do místnosti patří, resp. jeden ze znaků
+  <code class=text>., 0, -, _,</code> <i>mezera</i>, pokud toto políčko do místnosti
+  nepatří.</dd>   
+
+<dt class=tag id=allplatform>allplatform</dt>
+<dd>Tento (prázdný) tag určuje, že místnost má tvar celého kvádru xsize&times;ysize&times;zsize políček.</dd>
+
+<dt class=tag id=portal>portal</dt>
+<dd>Tento (prázdný) tag popisuje jeden portál v&nbsp;této místnosti. Atributy:
+  <dl class=atts> 
+   <dt class=attr>type</dt>
+   <dd>Typ portálu (v&nbsp;současné době jeden z&nbsp;řetězců <code class=xml>hdoor, vdoor,
+   hwindow, vwindow, ustairs, dstairs, udstairs</code>). Povinný atribut.</dd>
+   <dt class=attr>kind</dt>
+   <dd>Druh portálu (jeden z&nbsp;řetězců <code class=xml>in, out, inout</code>).
+   Povinný atribut.
+   </dd>
+   <dt class=attr>xpos</dt>
+   <dd>X souřadnice levého horního rohu portálu.</dd>
+   <dt class=attr>ypos</dt>
+   <dd>Y souřadnice levého horního rohu portálu.</dd>
+   <dt class=attr>xpos</dt>
+   <dd>Patro, ve kterém se portál nachází. Implicitní hodnota 0.</dd>
+  </dl>
+</dd>  
+
+<dt class=tag id=constraint>constraint</dt>
+<dd>Tento (prázdný) tag popisuje jedno omezení kladené na tuto místnost. Atributy:
+  <dl class=atts> 
+   <dt class=attr>type</dt>
+   <dd>Typ omezení. Povinný atribut. V&nbsp;současné době jsou podporovány tyto
+   typy omezení: <code class=xml>distance, neighbour, connected</code>.</dd>
+   <dt class=attr>function</dt>
+   <dd>Funkce hodnoty tohoto omezení. Povinný atribut. V&nbsp;současné době jsou podporovány
+   tyto funkce: <code class=xml>min, max, linear, yes, no, equals</code>.</dd>
+   <dt class=attr>value</dt>
+   <dd>Referenční hodnota pro funkci. Nepovinný atribut. Pro funkce <code class=xml>min, max, equals</code>
+   je tento atribut nutno uvést, pro funkci <code class=xml>linear</code> má implicitní
+   hodnotu 0, u&nbsp;funkcí <code class=xml>yes, no</code> atribut být nesmí.</dd>
+   <dt class=attr>from</dt>
+   <dd>Identifikátor skupiny místností, vůči které je toto omezení. Povinný atribut.</dd>
+   <dt class=attr>score</dt>
+   <dd>Koeficient hodnoty tohoto omezení. Implicitní hodnota nekonečno.</dd>
+  </dl>
+</dd>  
+  
+</dl>
+
+</body>
+</html>

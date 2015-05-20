@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+ "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+  <meta name="author" content="Petr Kadlec">
+  
+  <title>Stavebnice komplexních 3D scén</title>
+
+  <link rel=StyleSheet href="gm.css" type="text/css" title="Stylesheet">  
+</head>
+<body lang=cz>
+<h1>Uživatelská příručka &ndash; spuštění programu</h1>
+
+<h2>Úvod</h2>
+<p>Program je napsán v&nbsp;jazyce Java, proto k&nbsp;jeho spuštění budete
+potřebovat funkční prostředí jazyka Java (Java Runtime Environment, JRE). Pokud
+ho nemáte, můžete si ho stáhnout např. ze <a href="http://java.sun.com/">stránek firmy Sun</a>.
+Dále budete potřebovat knihovnu <a href="http://xml.apache.org/">Xerces</a>
+a&nbsp;knihovnu CyberVRML97.
+<p>Dále musíte upravit příslušný spouštěcí soubor tak, aby správně odkazoval na
+místa, kam jste tyto knihovny nainstalovali.
+
+<h2>Spuštění programu</h2>
+
+<h3>DOS/Windows</h3>
+<p>Ke spuštění programu slouží dávka BuildScene.bat, které jako parametry zadáte
+jméno <a href="scena.htm">souboru s&nbsp;požadavky na scénu</a> a&nbsp;jméno
+výstupního souboru. Například:
+<pre><kbd class=cmdline>BuildScene scenes\Scena3.xml vrml\Scena3.wrl</kbd></pre>
+<b>Poznámka</b>: Může se stát, že se při spouštění zobrazí chybové hlášení,
+oznamující, že v&nbsp;tabulce systémových proměnných není dostatek místa. Pak
+musíte program spouštět v&nbsp;novém příkazovém interpretu s&nbsp;větším místem
+pro systémové proměnné, který spustíte např. příkazem <kbd class=cmdline>command&nbsp;/e:4096</kbd>
+
+<h3>Un*x</h3>
+<p>Ke spuštění programu slouží skript buildscene, kterému jako parametry
+zadáte jméno <a href="scena.htm">souboru s&nbsp;požadavky na scénu</a> a&nbsp;jméno
+výstupního souboru. Například:
+<pre><kbd class=cmdline>./buildscene scenes/scena3.xml vrml/scena3.wrl</kbd></pre>
+
+<h2 id=options>Volby programu</h2>
+<p>Při spuštění můžete ovlivnit některá nastavení pomocí voleb. Takto lze pozměnit
+výstupní formát. K&nbsp;předání voleb použijete přepínače
+<code class=cmdline>-D<var class=inserthere>proměnná</var>=<var class=inserthere>hodnota</var></code>,
+které uvedete za jména zpracovávaných souborů.
+<p>Jako proměnné můžete použít:
+<dl>
+ <dt class=java>cz.cvut.felk.cs.gm.sceneautobuilder.outfmt</dt>
+ <dd>Hodnota specifikuje formát výstupního souboru. Může obsahovat buď <code>VRML</code>,
+     nebo <code>X3D</code>. Implicitní nastavení je výstup ve VRML.</dd>
+ <dt class=java>cz.cvut.felk.cs.gm.sceneautobuilder.includefile</dt>
+ <dd>Obsahuje jméno souboru, který se má vložit do výstupního souboru. Slouží
+     k&nbsp;vložení obvyklých společných uzlů, jako např. osvětlení, pozadí, apod.</dd>
+</dl>
+<p>Příklad:
+<pre><kbd class=cmdline>BuildScene scenes\Scena3.xml vrml\Scena3.wrl -Dcz.cvut.felk.cs.gm.sceneautobuilder.outfmt=X3D</kbd></pre>
+
+</body>
+</html>

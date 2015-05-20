@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+ "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+  <meta name="author" content="Petr Kadlec">
+  
+  <title>Stavebnice komplexních 3D scén - DTD požadavků na scénu</title>
+
+  <link rel=StyleSheet href="gm.css" type="text/css" title="Stylesheet">  
+</head>
+<body>
+<h1>DTD požadavků na scénu</h1>
+<p>Následuje DTD popisující požadavky na scénu (<a href="dist/scenereq.dtd">DTD dokument ke stažení</a>):
+
+<pre class=xml>
+&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
+
+&lt;!--
+	Scene Requirements DTD v1.0
+	(C) 2002, Petr Kadlec (kadlecp2@fel.cvut.cz)
+--&gt;
+
+
+&lt;!-- "scenereq" is the parent element --&gt;
+&lt;!ELEMENT scenereq (description?,((platform+)|allplatform),(reqroom|allowroom)+,constraint*)&gt;
+&lt;!ATTLIST scenereq
+	library		CDATA	#REQUIRED
+	xsize		CDATA	#REQUIRED
+	ysize		CDATA	#REQUIRED
+	zsize		CDATA	'1'
+	badscore	CDATA	#IMPLIED
+	trashscore	CDATA	#IMPLIED
+	goodscore	CDATA	'0'
+&gt;
+
+
+&lt;!-- "description" contains pure textual description of the scene requirements --&gt;
+&lt;!ELEMENT description (#PCDATA)*&gt;
+
+
+&lt;!-- "platform" contains matrix of platform specification for the scene --&gt;
+&lt;!ELEMENT platform (platformrow+)&gt;
+&lt;!ATTLIST platform level CDATA '0'&gt;
+
+
+&lt;!-- "platformrow" specifies a single row of platform matrix --&gt;
+&lt;!ELEMENT platformrow (#PCDATA)*&gt;
+
+
+&lt;!-- "allplatform" specifies the whole platform --&gt;
+&lt;!ELEMENT allplatform EMPTY&gt;
+
+
+&lt;!-- "reqroom" requires a room to be present --&gt;
+&lt;!ELEMENT reqroom EMPTY&gt;
+&lt;!ATTLIST reqroom
+	name	CDATA	#REQUIRED
+	min	CDATA	'1'
+	max	CDATA	#IMPLIED
+	score	CDATA	#IMPLIED
+&gt;
+
+
+&lt;!-- "allowroom" allows a room to be present --&gt;
+&lt;!ELEMENT allowroom EMPTY&gt;
+&lt;!ATTLIST allowroom
+	name	CDATA	#REQUIRED
+	score	CDATA	'0'
+&gt;
+
+
+&lt;!-- "constraint" provides one constraint for the scene --&gt;
+&lt;!ELEMENT constraint EMPTY&gt;
+&lt;!ATTLIST constraint
+	type		CDATA	#REQUIRED
+	function	CDATA	#REQUIRED
+	value		CDATA	#REQUIRED
+	score		CDATA	#IMPLIED
+&gt;
+</pre>
+</body>
+</html>

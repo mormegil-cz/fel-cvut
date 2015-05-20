@@ -1,0 +1,13 @@
+/*
+ * SceneAutoBuilder StyleSheet
+ * Petr Kadlec <kadlecp2@fel.cvut.cz>
+ */
+
+dt.tag { margin-top: 10px }
+dt.xml { font-family: "Courier New", monospace }
+
+.center { text-align: center }
+.tag { font-family: "Courier New", monospace }
+.attr { font-family: "Courier New", monospace }
+.filename { font-family: "Courier New", monospace }
+.java { font-family: "Courier New", monospace }

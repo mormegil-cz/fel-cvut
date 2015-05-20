@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+ "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+  <meta name="author" content="Petr Kadlec">
+  
+  <title>Stavebnice komplexních 3D scén</title>
+
+  <link rel=StyleSheet href="gm.css" type="text/css" title="Stylesheet">  
+</head>
+<body lang=cz>
+<h1>Uživatelská příručka &ndash; tvorba popisu scény</h1>
+
+<h2>Úvod</h2>
+<p>Popis scény obsahuje požadavky na vytvářenou scénu, jako je tvar scény,
+seznam místností, které ve scéně vyžadujete, atd. Jelikož je tento popis ve formátu
+XML, můžete k&nbsp;jeho tvorbě použít buď nějaký specializovaný XML editor, nebo
+je možno použít libovolný textový editor, který umožňuje ukládat čistý text. 
+
+<h2>Základní šablona</h2>
+<p>Základní šablona, kterou můžete zkopírovat do nově vytvářeného souboru, vypadá
+následovně:
+<samp class=xml><pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE library SYSTEM "<var class=inserthere>jméno DTD souboru</var>"&gt;
+&lt;scenereq library="<var class=inserthere>jméno souboru s popisem knihovny</var>" xsize="<var class=inserthere>délka scény</var>" ysize="<var class=inserthere>šířka scény</var>"&gt;
+
+&lt;/scenereq&gt;
+</pre></samp>
+<p>Místo <var class=inserthere>jméno DTD souboru</var> vložíte odkaz na DTD soubor
+pro popis scény. Pokud tento soubor nemáte, stáhněte si ho: <a href="dist/scenereq.dtd" class=filename>scenereq.dtd</a> 
+<p>Místo <var class=inserthere>jméno souboru s&nbsp;popisem knihovny</var> vložíte odkaz na
+XML soubor, který obsahuje popis knihovny místností. 
+
+<h2>Příklad</h2>
+<p>Nyní se podíváme na příklad popisu scény a&nbsp;rozebereme si ho:
+<samp class=xml><pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE scenereq SYSTEM "/usr/share/dtd/sceneautobuilder/scenereq.dtd"&gt;
+&lt;scenereq library="~/roomlibs/rooms_all.xml" xsize="8" ysize="5"&gt;
+   &lt;platform&gt;
+      &lt;platformrow&gt;...x....&lt;/platformrow&gt;
+      &lt;platformrow&gt;...x....&lt;/platformrow&gt;
+      &lt;platformrow&gt;xxxxxxxx&lt;/platformrow&gt;
+      &lt;platformrow&gt;xxxxxxxx&lt;/platformrow&gt;
+   &lt;/platform&gt;
+   &lt;reqroom name="vstup" min="1" max="1"/&gt;
+   &lt;reqroom name="kuchyne" min="1" max="1"/&gt;
+   &lt;reqroom name="pokoj" min="1" max="4"/&gt;
+   &lt;reqroom name="wc" min="1" max="2"/&gt;
+   &lt;allowroom name="chodba" score="-10"/&gt;
+   &lt;constraint type="doorsout" function="min" value="1"/&gt;
+   &lt;constraint type="doorsout" function="max" value="2"/&gt;
+&lt;/scenereq&gt;
+</pre></samp>
+<p>V&nbsp;tomto příkladu vidíme popis požadavků na scénu, využívající knihovnu 
+místností, popsanou souborem <code class=filename>~/roomlibs/rooms_all.xml</code>.
+Požadujeme, aby výsledná scéna obsahovala jednu místnost ze skupiny vstup,
+jednu místnost ze skupiny kuchyne, jednu až čtyři místnosti ze skupiny pokoj
+a jednu, nebo dvě místnosti ze skupiny wc. Dále umožňujeme, aby v&nbsp;případě
+nutnosti byly použity některé místnosti ze skupiny chodba. Každé použití takové
+místnosti ovšem od skóre řešení odčítá 10. Dále požadujeme, aby scéna měla
+jedny až dvoje dveře ven.
+
+<h2>Prvky popisu</h2>
+<h3>Povinné prvky</h3>
+<p>V&nbsp;tagu <code class=xml>scenereq</code> je uvedeno jméno souboru, obsahujícího
+popis knihovny místností, dále délku a&nbsp;šířku scény.
+Uvnitř tohoto tagu je umístěn popis půdorysu (pomocí tagů <code class=xml>platform + platformrow</code>,
+nebo pomocí prázdného tagu <code class=xml>allplatform</code>, který znamená, že
+scéna zabírá celý kvádr <code class=xml>xsize&times;ysize&times;zsize</code>.
+Dále zde musí být nejméně jedna místnost:
+
+<h3>Místnosti</h3>
+<p>Každý z&nbsp;tagů <code class=xml>reqroom/allowroom</code> umožňuje programu
+použít místnosti jisté skupiny. Tag <code class=xml>reqroom</code> vyžaduje,
+aby ve scéně bylo striktně tolik místností dané skupiny, kolik je uvedeno (v&nbsp;rozmezí
+<code class=xml>min&hellip;max</code>). Tag <code class=xml>allowroom</code>
+umožňuje použít libovolné množství místností ze skupiny, ovšem ve výsledné scéně
+je nevyžaduje. V&nbsp;tomto tagu je možno též určit modifikátor skóre, který je
+použit při každém použití místnosti dané skupiny.
+
+<h3>Omezení</h3>
+<p>Na scénu je možné též uvalit některá omezení. Tato omezení se zadávají pomocí
+prázdných tagů <code class=xml>constraint</code>. Každé omezení má svůj typ, funkci
+a referenční hodnotu.
+V&nbsp;současné době jsou podporovány tyto druhy omezení:
+<dl>
+ <dt class=xml>doorsout</dt>
+ <dd>Počet dveří vedoucích ven ze scény.</dd>
+ <dt class=xml>windowsout</dt>
+ <dd>Počet oken vedoucích ven ze scény.</dd>
+ <dt class=xml>roomcount</dt>
+ <dd>Počet místností ve scéně.</dd>
+</dl>
+<p>Každé omezení je po vyhodnocení jeho hodnoty předáno funkci, která na základě
+této hodnoty a&nbsp;také referenční hodnoty (dodané v&nbsp;atributu <code class=xml>value</code>)
+vypočítá výsledné ohodnocení, které je po vynásobení koeficientem (atribut <code class=xml>score</code>)
+přidáno k&nbsp;ohodnocení scény.
+Ve výsledku je vybrána scéna, která má nejvyšší (největší kladné, resp. nejméně záporné) ohodnocení.
+Funkce jsou stejné jako funkce pro omezení místností. Pro seznam funkcí viz
+<a href="knihovna.htm#funkce">omezení místností</a>.
+
+<h2>Závěrečné poznámky</h2>
+<p>Žádné identifikátory nejsou citlivé na velikost písmen.
+
+<h2>Podrobný popis</h2>
+<p>Pokud chcete detailní informace, můžete se podívat na
+<a href="scenexml.htm">podrobný popis</a>, co může soubor s&nbsp;požadavky na scénu
+obsahovat.
+
+</body>
+</html>

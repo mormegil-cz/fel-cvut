@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+ "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+  <meta name="author" content="Petr Kadlec">
+  
+  <title>Stavebnice komplexních 3D scén - DTD knihovny místností</title>
+
+  <link rel=StyleSheet href="gm.css" type="text/css" title="Stylesheet">  
+</head>
+<body>
+<h1>DTD knihovny místností</h1>
+<p>Následuje DTD popisující knihovnu místností (<a href="dist/library.dtd">DTD dokument ke stažení</a>):
+
+<pre class=xml>
+&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
+
+&lt;!--
+	Library DTD v1.0
+	(C) 2002, Petr Kadlec (kadlecp2@fel.cvut.cz)
+--&gt;
+
+
+&lt;!-- "library" is the parent element --&gt;
+&lt;!ELEMENT library (description?,room*)&gt;
+&lt;!ATTLIST library
+	URL	CDATA	#REQUIRED
+	xscale	CDATA	'1'
+	yscale	CDATA	#IMPLIED
+	zscale	CDATA	#IMPLIED
+&gt;
+
+
+&lt;!-- "room" specifies a single room --&gt;
+&lt;!ELEMENT room (description?,((platform+)|allplatform),portal*,constraint*)&gt;
+&lt;!ATTLIST room
+	object	CDATA 	#REQUIRED
+	name	CDATA	#IMPLIED
+	group	CDATA	#IMPLIED
+	xsize	CDATA	#REQUIRED
+	ysize	CDATA	#REQUIRED
+	zsize	CDATA	'1'
+&gt;
+
+
+&lt;!-- "description" contains pure textual description of a room or the whole library --&gt;
+&lt;!ELEMENT description (#PCDATA)*&gt;
+
+
+&lt;!-- "platform" contains matrix of platform specification for a room --&gt;
+&lt;!ELEMENT platform (platformrow+)&gt;
+&lt;!ATTLIST platform level CDATA '0'&gt;
+
+
+&lt;!-- "platformrow" specifies a single row of platform matrix --&gt;
+&lt;!ELEMENT platformrow (#PCDATA)*&gt;
+
+
+&lt;!-- "allplatform" specifies the whole platform --&gt;
+&lt;!ELEMENT allplatform EMPTY&gt;
+
+
+&lt;!-- "portal" specifies a single portal --&gt;
+&lt;!ELEMENT portal EMPTY&gt;
+&lt;!ATTLIST portal
+	type	CDATA	#REQUIRED
+	kind	CDATA	#REQUIRED
+	xpos	CDATA	#REQUIRED
+	ypos	CDATA	#REQUIRED
+	zpos	CDATA	'0'
+&gt;
+
+
+&lt;!-- "constraint" provides one constraint for the room --&gt;
+&lt;!ELEMENT constraint EMPTY&gt;
+&lt;!ATTLIST constraint
+	type		CDATA	#REQUIRED
+	function	CDATA	#REQUIRED
+	value		CDATA	#IMPLIED
+	from		CDATA	#REQUIRED
+	score		CDATA	#IMPLIED
+&gt;
+</pre>
+</body>
+</html>

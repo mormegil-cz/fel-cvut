@@ -1,0 +1,16 @@
+################################
+# MAKEFILE pro Black Jack      #
+#                              #
+# (c) 2000 by DragonSoft       #
+################################
+
+ASMOPT = -zi
+LINKOPT = /x /v
+
+BlackJack: bljack.exe
+
+bljack.exe: bljack.obj display.obj mouser.obj tga.obj cards.obj logics.obj random.obj
+	tlink $(LINKOPT) bljack.obj display.obj mouser.obj tga.obj cards.obj logics.obj random.obj, bljack.exe
+
+.asm.obj:
+	tasm $(ASMOPT) $<

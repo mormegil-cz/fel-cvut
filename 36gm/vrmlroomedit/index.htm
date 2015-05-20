@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+ "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+  <meta name="author" content="Petr Kadlec">
+  
+  <title>Stavebnice komplexních 3D scén</title>
+
+  <link rel=StyleSheet href="gm.css" type="text/css" title="Stylesheet">  
+</head>
+<body lang=cz>
+<h1>Stavebnice komplexních 3D scén</h1>
+<p class=author><a href="mailto:kadlecp2@fel.cvut.cz">Petr Kadlec</a>
+
+<h2>Úvod</h2>
+<p>Tato semestrální práce z&nbsp;předmětu GM má za úkol zjednodušit práci při generování
+testovacích scén. Jako vstup má knihovnu hotových 3D místností (ve formátu VRML/X3D,
+spolu s&nbsp;popisem ve formátu XML), plus požadavky na výslednou scénu (ve formátu XML).
+Výstupem je VRML/X3D soubor s&nbsp;vygenerovanou scénou, která obsahuje místnosti z&nbsp;dodané
+knihovny, rozmístěné podle daných požadavků. 
+<p>Algoritmus provádí veškerou činnost v&nbsp;hypotetické čtverečkové síti. Součástí
+popisu každé místnosti je informace o&nbsp;půdorysu místnosti (opět ve stejné čtverečkové síti).
+Dále je u&nbsp;každé místnosti seznam tzv. portálů (oken, dveří, případně schodů), které
+daná místnost obsahuje. Také je zde možno zadat omezení na vzájemné vztahy místností
+ve scéně.
+<p>Požadavky na výslednou scénu obsahují seznam místností (resp. skupin místností),
+které chceme ve výsledné scéně, spolu s&nbsp;některými omezeními, které na ně klademe. 
+
+<h2>Formáty vstupních dat</h2>
+<p>Všechna vstupní data jsou ve formátu XML. Jejich popis si můžete prohlédnout
+zde: <a href="libxml.htm">knihovna místností</a>, <a href="scenexml.htm">požadavky
+na scénu</a>.
+
+<h2>Program</h2>
+<p>Program je řešen v&nbsp;jazyce Java. Všechny třídy jsou umístěny v&nbsp;balíčku
+<code class=package>cz.cvut.felk.cs.gm.sceneautobuilder</code>. Program používá
+pro parsování XML souborů knihovnu <a href="http://xml.apache.org/">Xerces</a>,
+pro práci s&nbsp;VRML/X3D soubory knihovnu CyberVRML97. Více o&nbsp;programu
+viz <a href="zprava.htm">zpráva o&nbsp;řešení</a>.
+
+<h2>Algoritmy&nbsp;a&nbsp;postupy</h2>
+<p>Základním algoritmem je DFS (tzn. program provádí úplné prohledání stavového prostoru).
+Program postupně bere dosud neobsazená políčka ve scéně a snaží se na ně umístit
+některou místnost. Pokud již nezbývá žádné neobsazené políčko, program získal nějaké
+řešení. Pokud má toto řešení lepší ohodnocení, než dosud nalezené nejlepší,
+je uloženo. Pokud má řešení ohodnocení lepší, než je jistá nastavená mez, prohledávání
+je ukončeno, neboť se předpokládá, že toto řešení je již dostatečně kvalitní.
+Z&nbsp;principu řešení vyplývá, že program za řešení <em>nepovažuje</em>, když umístí
+všechny dodané místnosti, ale ve scéně zbývají prázdná políčka, nebo jinými slovy,
+program <em>nikdy</em> neponechá ve vytvořené scéně prázdné místo. Kvůli tomu je
+někdy nutno dodat &bdquo;vyplňovací&ldquo; místnosti (obvykle místnost 1x1 se
+záporným ohodnocením), které program použije tehdy, když potřebuje vyplnit
+&bdquo;díru&ldquo; ve scéně.
+
+<h2>Download</h2>
+<p>Ke stažení: <a href="dist/sceneautobuilder.zip">Celý balík</a> (287&nbsp;KB ZIP),
+nebo jenom: <a href="dist/sceneautobuilder.jar">třídy programu</a> (39&nbsp;KB JAR),
+<a href="dist/source.zip">zdrojový kód</a> (24&nbsp;KB ZIP).
+<p><b>Poznámka:</b> Pokud jste již stáhli programový balík, rozbalili ho a nyní čtete
+tuto dokumentaci lokálně, žádný z&nbsp;odkazů do adresáře <code class=filename>dist</code>
+přirozeně nefunguje. Všechny příslušné soubory totiž už máte.
+<p>Jako doplňkový nástroj je možno stáhnout si <a href="dist/roomedit.zip">Room Editor</a> (276&nbsp;KB ZIP),
+což je pomůcka, kterou jsem používal při tvorbě testovacích místností. V&nbsp;balíčku
+je Win32 spustitelný soubor, spolu se zdrojovými soubory pro Delphi6. (Poznámka: Tento
+nástroj není součástí hlavního distribučního balíku a není nijak dokumentován či podporován&hellip;)
+
+<h2>Uživatelská příručka</h2>
+<p>Pokud chcete použít tento program, musíte provést následující kroky:
+<ol>
+  <li><a href="knihovna.htm">Vytvořit knihovnu místností</a></li>
+  <li><a href="scena.htm">Vytvořit popis scény</a></li>
+  <li><a href="spusteni.htm">Spustit program</a></li>
+</ol>
+
+<h2>Rady, tipy, triky</h2>
+<p>Program je sice schopen najít řešení pro každé zadání, které řešení má, ovšem
+vzhledem k&nbsp;tomu, že tato úloha je NP-úplná, nemusíte se řešení dočkat. Proto
+je vhodné myslet na omezení programu již při tvorbě požadavků na scénu. Program
+postupně zaplňuje scénu dodanými místnostmi, přičemž místnosti používá v&nbsp;tom
+pořadí, v jakém jsou uvedeny v&nbsp;souboru s&nbsp;popisem scény. Proto je vhodné
+uvádět &bdquo;nejuniverzálnější&ldquo; místnosti až nakonec, neboť pokud
+uvedete vyplňovací místnost 1&times;1 jako první (byť se záporným ohodnocením),
+program začne tím, že touto místností vyplní celou scénu, načež začne od konce
+zkoušet i&nbsp;jiné varianty. Výsledkem je, že se s&nbsp;největší pravděpodobností
+nedočkáte žádného rozumného řešení.
+<p>Jako vhodné urychlení je možno zvážit neuvedení výplňových místností, teprve
+když program oznámí, že neexistuje žádné řešení, je možno povolit jejich použití
+(opakuji, na konci seznamu), dát jim záporné ohodnocení a nastavit ořezávací skóre
+(<a href="scenexml.htm#trashscore" class=attr>trashscore</a>) na vhodnou
+hodnotu tak, aby se nezkoušela hledat řešení, která obsahují mnoho výplňových místností.
+
+<!--
+<hr>
+<a href="http://validator.w3.org/referer"><img src="img/html40.png" alt="Valid HTML4.0!"></a>
+-->
+
+</body>
+</html>

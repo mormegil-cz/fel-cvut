@@ -1,0 +1,10 @@
+@semestralka
+@ins_navobjekt
+@ins_navigacnibod
+@ins_letiste
+@ins_pilot
+@ins_provozovatel
+@ins_typletadla
+@ins_regletadlo
+@ins_letovyplan
+@ins_planpresbod

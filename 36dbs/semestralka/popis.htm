@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+ "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML lang="cz">
+
+<HEAD>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=win-1250">
+  <meta name="author" content="Petr Kadlec">
+  <meta name="description" content="Semestrální práce z DBS">
+  <meta name="keywords" content="database,SQL,E-R model,DBS">
+  <meta name="generator" content="HTML-Kit">
+  
+  <LINK REL=StyleSheet HREF="popis.css" TYPE="text/css"
+                       TITLE="CSS Styl:Semestrální práce">			
+  
+  <TITLE>Semestrální práce z DBS</TITLE>
+  
+</HEAD>
+
+<BODY>
+
+<H1 CLASS="maintitle">Semestrální práce z pøedmìtu DBS</H1>
+<H1 CLASS="nazev">Øízení letového provozu</H1> 
+
+<P CLASS="podpis">Petr Kadlec<BR>
+cvièení: støeda, 9:15</P>
+
+<H2>Popis</H2>
+<P>Databázový systém øízení letového provozu (ØLP) je urèen k registraci všech
+letù (pøesnìji øeèeno letových plánù, lety bez použití služeb ØLP se neevidují).
+K tomu úèelu jsou vytvoøeny seznamy všech pilotù, všech provozovatelù letadel
+(napø. leteckých spoleèností), dále seznam všech typù letadel schválených pro
+provoz v Èeské Republice a seznam všech letadel v ÈR zaregistrovaných. Jelikož
+se u každého letového plánu zaznamenává i jeho obsah, tj. trasa, po které se
+tento plán letí, jsou registrována i všechna letištì a také navigaèní body (jako
+radiomajáky, apod.). U každého pilota a provozovatele nás zajímají bìžné
+identifikaèní údaje (jméno, rodné èíslo, resp. název), u typu letadla nás
+zajímají hlavnì technické údaje jako napø. poèet míst. U každého letadla si
+poznamenáme, jakého je typu, komu patøí a jeho imatrikulaèní oznaèení. U každého
+navigaèního objektu si poznamenáme hlavnì jeho zemìpisnou polohu.    
+
+<H2>Analýza</H2>
+
+<H3>Datový model</H3>
+<img src="ermodel.gif" width="964" height="690" alt="E-R model">
+
+<H3>Funkèní model</H3>
+
+<H4>Uživatelské role</H4>
+<ul CLASS="toplevel">
+<li><B CLASS="roletitle">Pracovník ÈLI</B> - Spravuje všechny databáze, tj.
+pøedevším seznamy pilotù a provozovatelù, letadel a jejich typù a navigaèních
+objektù.</li>
+<li><B CLASS="roletitle">Pilot</B> - Pøidává nové letové plány.</li>
+<li><B CLASS="roletitle">Pracovník ØLP</B> - Prohlíží si všechny údaje,
+pøedevším podané letové plány.</li>
+</ul>
+
+<H4>Scénáøe</H4>
+
+<ul CLASS="toplevel">
+<li><B CLASS="scenar">Podání letového plánu</B> - Toto je hlavní a nejèastìjší
+operace v systému. Sestává z následujících krokù:
+  <ul CLASS="kroky">
+   <li>Pilot si s mapou a navigaèními pomùckami zvolí trasu letu (poè. podpora 
+NE)</li>
+   <li>Pilot vyplní formuláø letového plánu (poè. podpora ANO)</li>
+   <li>Systém vytiskne dvì kopie letového plánu (poè. podpora ANO)</li>
+   <li>Pilot podepíše jednu kopii a odevzdá ji pøed odletem (poè. podpora NE)
+</li>   
+  </ul>
+</li>
+<li><B CLASS="scenar">Prùbìh letu</B> - V prùbìhu letu se v centru ØLP využívá
+databáze letových plánù:
+  <ul CLASS="kroky">
+   <li>Pilot se v prùbìhu letu ohlásí støedisku ØLP (poè. podpora NE)</li>
+   <li>Pracovník ØLP si nechá zobrazit plán letu (poè. podpora ANO)</li>
+   <li>Na jeho základì provádí øízení provozu (poè. podpora NE)</li>
+  </ul>     
+</li>
+<li><B CLASS="scenar">Pøidání pilota</B>
+  <ul CLASS="kroky">
+   <li>Nìjaký èlovìk složí zkoušky a získá pilotní prùkaz (poè. podpora NE)</li>
+   <li>Pracovník letecké inspekce vytvoøí nový záznam o pilotovi (poè. podpora
+ANO)</li>
+  </ul>
+</li>    
+<li><B CLASS="scenar">Pøidání provozovatele, typu, registrovaného letadla,
+navigaèního bodu èi letištì</B>
+  <ul CLASS="kroky">
+  Postupuje se obdobnì jako pøi pøidání pilota - tuto akci provede pracovník
+inspekce tím, že vytvoøí pøíslušný nový záznam.
+  </ul>
+</li>
+</ul>       
+
+<H4>SQL skripty</H4>
+<P><A HREF="sql_scr.zip">Zde</A> se dají stáhnout všechny SQL skripty. Jsou
+zabaleny v ZIP archivu, který obsahuje:</P>
+
+<table summary="Obsah ZIP archivu">
+<tr>
+<th width="15%" scope="col">Soubor</td>
+<th scope="col">Úèel</td>
+</tr>
+<tr>
+<td CLASS="filename">recreate.sql</td>
+<td>Tento skript zavolá ve správném poøadí všechny ostatní tak, aby se zcela
+znovu vytvoøily a naplnily všechny tabulky.</td>
+</tr>
+<tr>
+<td CLASS="filename">semestralka.sql</td>
+<td>Znovu vytvoøí všechny tabulky (exportován z E-R modeláøe).</td>
+</tr>
+<tr>
+<td CLASS="filename">ins_*.sql</td>
+<td>Tyto skripty naplní pøíslušné tabulky inicializaèními daty.</td>
+</tr>
+</table>
+
+<HR>
+<P CLASS="legals">Tento text je souèástí semestrální práce z DBS
+&copy; Petr Kadlec, 2000 
+
+</BODY></HTML>

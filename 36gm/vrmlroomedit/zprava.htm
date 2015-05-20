@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+ "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+  <meta name="author" content="Petr Kadlec">
+  
+  <title>Stavebnice komplexních 3D scén</title>
+
+  <link rel=StyleSheet href="gm.css" type="text/css" title="Stylesheet">  
+</head>
+<body lang=cz>
+<h1>Stavebnice komplexních 3D scén &ndash; zpráva o&nbsp;řešení</h1>
+
+<h2>Úvod</h2>
+<p>Toto je zpráva o&nbsp;řešení semestrální práce z&nbsp;předmětu 36GM, rozšířené
+do řešení semestrálního projektu (36SEM).
+
+<h2>Zadání</h2>
+<p>Navrněte a&nbsp;implementujte systém umožňující rychlou tvorbu velmi
+jednoduchých komplexních 3D scén ve formátu VRML nebo X3D. K&nbsp;modelování
+scény se použijí existující jednodušší fragmenty scén a&nbsp;proces modelování
+bude řízen jednoduchými editovatelnými skripty. Pomocí těchto skriptů bude možné
+jednoduše ovlivňovat veškeré vlastnosti budoucí scény a&nbsp;tak rychle generovat
+různé třídy velmi komplexních scén.
+<ul>
+  <li>Objekty se skládají ze základních stavebních kamenů (poloha dveří je předem
+      jasně determinována).</li>
+  <li>Omezovací pravidla pro tvorbu scény jsou zapsána pomocí gramatiky a&nbsp;implementována
+      příslušnou datovou strukturou (automat, zás. automat, atd.).</li>
+</ul>
+<p>Toto bylo původní zadání. V&nbsp;průběhu řešení se některé vlastnosti mírně
+pozměnily. Veškerá vstupní data (až na modely fragmentů ve VRML) jsou ve formátu
+XML, místo speciální gramatiky pro omezující pravidla jsou tedy tato zapsána
+přímo v&nbsp;XML souboru.
+<p>Rožšíření na semestrální projekt spočívá právě v&nbsp;implementaci omezujících
+pravidel (constraints), jejich vyhodnocování a&nbsp;hledání řešení s&nbsp;nejlepším
+skóre, spolu s&nbsp;rozšířením činnosti programu na vícepatrové scény a&nbsp;místnosti.
+
+<h2>Analýza a&nbsp;návrh</h2>
+<p>Problém rozmístění fragmentů do scény je NP-úplný. Proto nemůžeme očekávat,
+že by náš program dokázal v&nbsp;rozumném čase vyřešit libovolnou úlohu. Přesto
+můžeme pro běžné, nijak rozsáhlé úlohy očekávat, že program řešení nalézt dokáže.
+<p>Pro zhodnocení &bdquo;kvality&ldquo; řešení, s&nbsp;ohledem na zadaná omezení,
+používáme <i>skóre</i>, které vyjadřuje, jak moc se řešení blíží takovému, jaké
+očekáváme. Čím kladnější je skóre, tím lepší řešení je. Naopak řešení mající skóre
+rovno mínus nekonečnu bude zahozeno jako neodpovídající zadání. Každé omezení
+má přiřazenu hodnotu, podle které se hodnotí jeho významnost. Implicitní hodnotou
+každého omezení je nekonečno, což zajišťuje, že řešení nesplňující takové omezení
+vůbec nebude uživateli prezentováno jako řešení.
+<p>Základním algoritmem řešení je prohledávání do hloubky (DFS), naprogramované
+pomocí rekurzivní funkce. Při prohledávání se kontroluje aktuální skóre a&nbsp;při
+příliš nízké hodnotě skóre je možno provést návrat, přestože je stále možno umisťovat
+další místnosti. Tím se zkracuje doba nalezení rozumného řešení.
+
+<h2>Implementace</h2>
+<p>Celý program je implementován v&nbsp;Javě, s&nbsp;využitím knihovny Xerces
+pro práci s&nbsp;XML soubory a&nbsp;knihovny CyberVRML97 pro práci s&nbsp;VRML/X3D
+soubory.
+<h3>Stručný přehled organizace programu</h3>
+<p>Program je obsažen v&nbsp;balíčku <code class=package>cs.cvut.felk.cs.gm.sceneautobuilder</code>
+a&nbsp;je rozdělen do pěti souborů:
+<dl>
+  <dt class=filename>BuildScene.java</dt>
+  <dd>Spustitelná třída programu. Obsahuje pouze metodu <code class=java>main</code>.</dd>
+  
+  <dt class=filename>Library.java</dt>
+  <dd>Obsahuje třídy pro práci s&nbsp;knihovnou místností. Hlavní třída
+      <code class=java>Library</code> umožňuje nahrát příslušný XML soubor.</dd>
+      
+  <dt class=filename>SceneReq.java</dt>
+  <dd>Obsahuje třídy pro práci s&nbsp;požadavky na scénu. Hlavní třída
+      <code class=java>SceneReq</code> umožňuje nahrát příslušný XML soubor.</dd>
+
+  <dt class=filename>PlatformCell.java</dt>
+  <dd>Obsahuje pouze dvě pomocné třídy pro ukládání buněk mřížky.</dd>
+  
+  <dt class=filename>Solver.java</dt>
+  <dd>Obsahuje třídy hlavního jádra programu, které provádí vlastní řešení úlohy.
+      Nejdůležitější je rekurzivní funkce <code class=java>recursiveSolve</code>
+      třídy <code class=java>Solver</code>. Ta provádí hlavní smyčku řešení.</dd>
+</dl>      
+
+<h2>Ukázky a&nbsp;testování</h2>
+<p><a href="dist/sceneautobuilder.zip">Distribuce programu</a> obsahuje adresář
+<code class=filename>examples</code>, ve kterém jsou příklady pro testování
+programu. Soubory <code class=filename>l_*.xml</code> obsahují popis knihovny
+místností, soubory <code class=filename>s_*.xml</code> obsahují požadavky na scénu,
+soubory <code class=filename>m_*.wml</code> jsou VRML soubory s&nbsp;modely místností
+a <code class=filename>o_*.wml</code> jsou výsledné VRML soubory. Také je zde
+soubor <code class=filename>include.wml</code>, který byl používán jako
+<a href="spusteni.htm#options">include soubor</a> při zpracovávání příkladů.
+<h3>Spuštění příkladů</h3>
+<p>Pro zjednodušení spouštění příkladů existuje speciální spouštěcí soubor
+<code class=filename>BuildExample.bat</code>, kterému předáte pouze název příkladu
+(např. <code class=cmdline>pentomino</code>, názvy jsou uváděny v&nbsp;titulku).
+Program se spouští z&nbsp;adresáře, do kterého jste rozbalili program (ten, který
+obsahuje hlavní spouštěcí soubor), např.
+<pre><kbd class=cmdline>examples\BuildExample pentomino</kbd></pre>
+<p>Výsledný soubor vznikne v&nbsp;aktuálním adresáři, abyste mohli porovnávat
+s&nbsp;již dodanými výsledky. Pro další zjednodušení existuje dávka
+<code class=cmdline>BuildAllExamples.bat</code>, která postupně spustí všechny příklady.  
+
+<h3>Příklad 1 &ndash; Pentomino (<code class=filename>pentomino</code>)</h3>
+<p>Na prvním příkladě ukážeme základní funkcionalitu programu &ndash; skládání
+místností (ačkoliv to v&nbsp;tomto případě místnosti nebudou&hellip;). Známá hříčka
+Pentomino dává za úkol poskládat dvanáct pětičtverečkových kamenů na šachovnici,
+ze které jsou odebrána čtyři políčka. To je ale přesně to, co náš program umí,
+proč ho tedy nepoužít? Jako &bdquo;místnosti&ldquo; jsou zde definovány jednotlivé
+kameny, přičemž u&nbsp;těch kamenů, které mají dva různé tvary lišící se převrácením
+obsahuje příslušná skupina tyto dva kameny. Požadavky na scénu pak obsahují tvar
+šachovnice s&nbsp;vynechanými poli a&nbsp;seznam skupin, přičemž požadují právě
+jeden kámen z každé skupiny.
+<p class=center><a href="vrml/o_pentomino.wrl"><img src="img/priklad1.png" alt="Řešení 1. příkladu" width="508" height="317"></a>
+
+<h3>Příklad 2 &ndash; Portály (<code class=filename>portaly</code>)</h3>
+<p>Zde si ukážeme použití portálů. Knihovna obsahuje tři místnosti 3&times;1,
+z&nbsp;nichž jedna obsahuje jedny vnitřní dveře, jedna jedny vnitřní dveře a&nbsp;jedno
+vnější okno a&nbsp;třetí obsahuje dvoje vnitřní a&nbsp;jedny vnější dveře. Scéna
+pak vyžaduje nejméně jednu místnost od každého druhu. Existuje tedy jediné řešení
+(až na otočení celé scény), které program najde. 
+<p class=center><a href="vrml/o_portaly.wrl"><img src="img/priklad2.png" alt="Řešení 2. příkladu" width="391" height="331"></a>
+
+<h3>Příklad 3 &ndash; Omezení místností (<code class=filename>mistomez</code>)</h3>
+<p>Zde si ukážeme omezení uvedené v&nbsp;knihovně místností. Knihovna místností
+obsahuje tři typy místností, přičemž je požadováno, aby místnost <code class=xml>C1</code>
+byla sousedem místností <code class=xml>C2</code> i <code class=xml>C3</code>. Z&nbsp;toho
+vyplývá, že místnost <code class=xml>C1</code> musí být umístěna uprostřed,
+což také program správně zjistí.
+<p class=center><a href="vrml/o_mistomez.wrl"><img src="img/priklad3.png" alt="Řešení 3. příkladu" width="292" height="229"></a>
+
+<h3>Příklad 4 &ndash; Omezení scény (<code class=filename>scenomez</code>)</h3>
+<p>Zde si ukážeme omezení uvedené v&nbsp;požadavcích na scénu. Existuje jediný
+typ místnosti, která má na jedné straně jedny dveře, na druhé straně troje dveře,
+přičemž všechny dveře jsou druhu <code class=xml>inout</code>. V&nbsp;požadavcích
+na scénu je uveden minimální počet výstupních dveří, rovný třem. Dále zde můžete
+experimentovat s&nbsp;tímto omezením, čímž můžete dosáhnout libovolné ze čtyř
+různých platných rozmístění místností.
+<p class=center><a href="vrml/o_scenomez.wrl"><img src="img/priklad4.png" alt="Řešení 4. příkladu" width="362" height="323"></a>
+
+<h3>Příklad 5 &ndash; Doma (<code class=filename>doma</code>)</h3>
+<p>Zde si ukážeme jeden o&nbsp;trochu obecnější příklad.
+<p class=center><a href="vrml/o_doma.wrl"><img src="img/priklad5.png" alt="Řešení 5. příkladu" width="587" height="345"></a>
+
+<h3>Příklad 6 &ndash; Komplexní na závěr (<code class=filename>komplex</code>)</h3>
+<p>Jako předposlední příklad si ukážeme komplexnější scénu. Knihovna místností obsahuje poněkud vyšší
+počet místností, uspořádaných do skupin <code class=xml>pokoj, kuchyne, wc</code>. Scéna
+pak vyžaduje nejméně jednu kuchyň, jedno wc a&nbsp;tři pokoje. V&nbsp;příkladu je též ukázáno
+použití výplňové místnosti. V&nbsp;příkladu je dále použito omezení, žádající
+jistou minimální vzdálenost mezi wc a kuchyní. Nakonec jsou bezpodmínečně vyžadovány
+nejméně jedny dveře ven.
+<p>Na tomto příkladu je vidět jeden velký problém scén generovaných tímto programem &ndash; nepropojenost.
+Více viz <a href="#notes">poznámky na závěr</a>.
+<p class=center><a href="vrml/o_komplex.wrl"><img src="img/priklad6.png" alt="Řešení 6. příkladu" width="551" height="387"></a>
+
+<h3>Příklad 7 &ndash; A jako přídavek: Vícepatrové scény (<code class=filename>schody</code>)</h3>
+<p>Na úplný závěr si ukážeme scénu, která není jako všechny předchozí &bdquo;placatá&ldquo;, ale má
+dvě patra, přičemž mezi místnostmi jsou místnosti, obsahující schody. Je vidět,
+že program nemá potíže ani s&nbsp;tím, že horní patro nemá stejný půdorys jako dolní.
+<p class=center><a href="vrml/o_schody.wrl"><img src="img/priklad7.png" alt="Řešení 7. příkladu" width="343" height="258"></a>
+
+<h2 id=notes>Poznámky na závěr</h2>
+<ul>
+<li>Scéna vytvořená tímto programem sice může navenek vypadat velice realisticky,
+ale uvnitř můžeme narazit na poměrně velký nedostatek &ndash; místnosti tvoří
+nepropojené &bdquo;ostrovy&ldquo;. Existuje sice omezení, které nám garantuje
+jistý minimální počet dveří ven, ovšem ty zaručí pouze to, že alespoň jeden
+z&nbsp;ostrovů bude propojen s&nbsp;vnějším světem. Tento problém nemá žádné
+jednoduché řešení. Jistým řešením by mohlo být přidání omezení na scénu,
+které by specifikovalo počet uzavřených komponent. To ovšem naráží na problémy
+hlavně u&nbsp;výplňových místností.</li>
+<li>Dveře (i&nbsp;další druhy portálů) musí být v&nbsp;modelu reprezentovány
+pouze otvory ve stěnách, protože jinak by byl problém s&nbsp;lícováním sobě si
+odpovídajících částí &ndash; kam se dveře otvírají (dovnitř/ven), jaké jsou dveře
+(pravé/levé), atd. Jako další rozšíření programu je možno zvážit přidání knihovny
+dveří, ze které se do hotového modelu přidají dveře do příslušných otvorů. Pokud
+by tyto dveře byly vybaveny i&nbsp;příslušnými senzory, velmi snadno lze dosáhnout
+výborného dojmu.</li>
+</ul>
+
+</body>
+</html>

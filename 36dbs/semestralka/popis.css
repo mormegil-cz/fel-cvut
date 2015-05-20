@@ -1,0 +1,7 @@
+  BODY  { color: black }
+  TD.filename  { font-family: "Courier New", monospace }
+  H1.maintitle { text-align: center }
+  H1.nazev { text-align: center; font-style:italic }
+  P.podpis { font-family: "Times New Roman", serif; font-size: larger; text-align: right }
+  P.legals { font-family: "Arial", sans-serif; font-size: xx-small; font-style: italic }
+  HR { margin-top: 1em }

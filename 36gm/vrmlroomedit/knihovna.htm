@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+ "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+  <meta name="author" content="Petr Kadlec">
+  
+  <title>Stavebnice komplexních 3D scén</title>
+
+  <link rel=StyleSheet href="gm.css" type="text/css" title="Stylesheet">  
+</head>
+<body lang=cz>
+<h1>Uživatelská příručka &ndash; tvorba knihovny místností</h1>
+
+<h2>Úvod</h2>
+<p>Knihovna místností sestává jednak z&nbsp;knihovny modelů ve formátu VRML/X3D,
+jednak z&nbsp;popisu knihovny ve formátu XML. V&nbsp;XML souboru jsou uloženy
+ty informace o&nbsp;modelech, které jsou pro program podstatné. Program tedy pracuje
+pouze s&nbsp;informacemi ze souboru XML, modely používá až v&nbsp;závěrečné fázi,
+když sestavuje výstupní soubor.
+
+<h2>Tvorba modelů</h2>
+<p>VRML/X3D soubor s&nbsp;modely místností obsahuje jednu nezávislou pojmenovanou
+část pro každou místnost knihovny. Každá místnost musí mít počátek (tzn. nikoliv
+střed, ale bod odpovídající levému hornímu rohu půdorysu nejnižšího patra)
+v&nbsp;bodě (0,0,0).
+
+<h2>Tvorba popisu</h2>
+<p>Poté musíte pro hotovou knihovnu modelů vytvořit popis ve formátu XML, podle
+kterého bude program s&nbsp;knihovnou pracovat. Jelikož je tento popis ve formátu
+XML, můžete k&nbsp;jeho tvorbě použít buď nějaký specializovaný XML editor, nebo
+je možno použít libovolný textový editor, který umožňuje ukládat čistý text. 
+
+<h2>Základní šablona</h2>
+<p>Základní šablona, kterou můžete zkopírovat do nově vytvářeného souboru, vypadá
+následovně:
+<samp class=xml><pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE library SYSTEM "<var class=inserthere>jméno DTD souboru</var>"&gt;
+&lt;library URL="<var class=inserthere>jméno VRML/X3D souboru</var>"&gt;
+
+&lt;/library&gt;
+</pre></samp>
+<p>Místo <var class=inserthere>jméno DTD souboru</var> vložíte odkaz na DTD soubor
+pro popis knihovny objektů. Pokud tento soubor nemáte, stáhněte si ho: <a href="dist/library.dtd" class=filename>library.dtd</a> 
+<p>Místo <var class=inserthere>jméno VRML/X3D souboru</var> vložíte odkaz na VRML/X3D
+soubor, který obsahuje modely místností. 
+
+<h2>Příklad</h2>
+<p>Nyní se podíváme na příklad knihovny a&nbsp;rozebereme si ho:
+<samp class=xml><pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE library SYSTEM "/usr/share/dtd/sceneautobuilder/library.dtd"&gt;
+&lt;library URL="~/vrml/rooms_all.wrl"&gt;
+   &lt;room object="bigblue1" group="pokoj" xsize="4" ysize="2"&gt;
+      &lt;platform&gt;
+         &lt;platformrow&gt;xx..&lt;/platformrow&gt;
+         &lt;platformrow&gt;xxxx&lt;/platformrow&gt;
+      &lt;/platform&gt;
+      &lt;portal type="vdoor" kind="in" xpos="2" ypos="0"/&gt;
+      &lt;constraint type="distance" function="min" value="5" from="wc" score="10"&gt;
+   &lt;/room&gt;
+   &lt;room object="small3" group="WC" xsize="2" ysize="2"&gt;
+      &lt;allplatform/&gt;
+   &lt;/room&gt;
+&lt;/library&gt;
+</pre></samp>
+<p>V&nbsp;tomto příkladu vidíme knihovnu, popisující VRML soubor <code class=filename>~/vrml/rooms_all.wrl</code>.
+Tato knihovna obsahuje dvě místnosti: <code class=xml>bigblue1, small3</code>. Tyto místnosti
+jsou ve skupinách <code class=xml>pokoj</code>, resp. <code class=xml>WC</code>.
+Místnost bigblue1 má tvar písmene P, místnost small3 je čtvercová, o&nbsp; rozměrech 2&times;2.
+Knihovna též požaduje, aby pokud možno místnost bigblue1 nebyla blíže, než 5 jednotek
+od libovolné místnosti skupiny WC.
+
+<h2>Prvky popisu</h2>
+<h3>Povinné prvky</h3>
+<p>Knihovna je obsažena uvnitř tagu <code class=xml>library</code>, který obsahuje
+atribut <code class=xml>URL</code>, ve kterém je uvedeno URL (nebo jméno souboru)
+VRML/X3D souboru s&nbsp;modely místností. Obsahem knihovny je seznam místností
+(tagů <code class=xml>room</code>).
+<p>V&nbsp;každém tagu <code class=xml>room</code> je uveden identifikátor místnosti
+ve VRML/X3D souboru. Může zde být i&nbsp;identifikátor skupiny, do které tato místnost
+patří. Dále jsou zde uvedeny rozměry místnosti (resp. jejího půdorysu).
+Uvnitř tohoto tagu je umístěn popis půdorysu pomocí tagů <code class=xml>platform + platformrow</code>,
+nebo pomocí prázdného tagu <code class=xml>allplatform</code>, který znamená, že
+místnost zabírá celý kvádr <code class=xml>xsize&times;ysize&times;zsize</code>.
+
+<h3>Poznámka o souřadných systémech</h3>
+<p>V&nbsp;rámci programu (a&nbsp;souboru s&nbsp;popisem knihovny modelů) se
+horizontální souřadnice označují x, y, zatímco osa směřující od země k&nbsp;vyšším
+patrům budovy jako z. Osa x v&nbsp;půdorysech směřuje zleva doprava, osa y směřuje
+zhora dolů (po řádcích půdorysu). V&nbsp;souborech VRML/X3D se ovšem používá
+standardizovaná pravotočivá souřadná soustava, ve které je osa y vertikální.
+<p class=center><img src="img/sourad.png" alt="Souřadné soustavy" width="330" height="270">
+<p>Na obrázku vidíme kvádr, který bychom v&nbsp;XML souboru popsali následovně:
+<code class=xml><pre>
+   &lt;room object="kvadr" xsize="4" ysize="2"&gt;
+      &lt;platform&gt;
+         &lt;platformrow&gt;xxxx&lt;/platformrow&gt;
+         &lt;platformrow&gt;xxxx&lt;/platformrow&gt;
+      &lt;/platform&gt;
+   &lt;/room&gt;
+</pre></code>
+<p>Zde bychom samozřejmě mohli použít i&nbsp;<code class=xml>allplatform</code>,
+tag <code class=xml>platform</code> zde používáme pro názornost. Na obrázku je
+též zvýrazněn bod (0,0,0), čímž je zřejmé, jak musíme ve VRML modelu místnost
+umístit. Modrá, zelená a červená úsečka znázorňují (po řadě) orientaci os x, y, z
+ve VRML modelu. V&nbsp;XML popisu červenou osu označujeme jako y, zatímco zelená
+je osa z, která je ovšem používána jen zřídka.
+<p>Pro úplnost zde ještě ukážeme, jak by například mohla vypadat &bdquo;knihovna&ldquo;,
+obsahující pouze model tohoto kvádru ve formátu VRML:
+<code class=vrml><pre>
+#VRML V2.0 utf8
+DEF kvadr Transform {
+  translation 2.0 0.5 1.0
+  children [
+    Shape {
+      geometry Box { size 4.0 1.0 2.0 }
+    }
+  ]
+}
+</pre></code>
+<p>Pokud máte ve svém prohlížeči podporu VRML, můžete si
+<a href="vrml/kvadr.wrl">kvádr i&nbsp;prohlédnout</a>.
+
+<h3>Portály</h3>
+<p>Portál je společné označení pro dveře, okna a schody. Všechny portály, vedoucí
+do/z místnosti, jsou popsány pomocí prázdných tagů <code class=xml>portal</code>.
+Tento tag obsahuje atributy, popisující typ a umístění portálu.
+<p>Typ portálu (udávaný povinným atributem <code class=xml>type</code>, může nabývat
+jedné z&nbsp;následujících hodnot:
+<dl>
+ <dt class=xml>hdoor</dt>
+ <dd>Horizontální dveře</dd>
+ <dt class=xml>vdoor</dt>
+ <dd>Vertikální dveře</dd>
+ <dt class=xml>hwindow</dt>
+ <dd>Horizontální okno</dd>
+ <dt class=xml>vwindow</dt>
+ <dd>Vertikální okno</dd>
+ <dt class=xml>ustairs</dt>
+ <dd>Schody nahoru</dd>
+ <dt class=xml>dstairs</dt>
+ <dd>Schody dolů</dd>
+ <dt class=xml>udstairs</dt>
+ <dd>Schody nahoru i&nbsp;dolů</dd>
+</dl>
+<p>Portál může být též jednoho z&nbsp;druhů <code class=xml>in, out, inout</code>.
+Tento druh se zadává povinným atributem <code class=xml>kind</code>.
+<p>Umístění portálu se zadává povinnými atributy <code class=xml>xpos, ypos</code>.
+Tyto atributy označují referenční bod portálu, kterého se portál jedním (levým horním) rohem dotýká.
+Hodnoty jsou v rozsahu 0&hellip;xsize, resp. 0&hellip;ysize. Vysvětlení viz&nbsp;obrázek:
+<p class=center><img src="img/portaly.png" alt="Souřadná soustava portálů" width="236" height="161">
+<p>Na obrázku je místnost, která má stejný půdorys jako místnost bigblue1 z&nbsp;prvního
+příkladu. Také červeně vyznačené dveře jsou uvedeny v&nbsp;příkladu. Jsou to
+vertikální dveře (<code class=xml>vdoor</code>), umístěné v&nbsp;bodě o&nbsp;souřadnicích (2;0).
+Jako příklad horizontálních dveří (<code class=xml>hdoor</code>), které v&nbsp;příkladu
+nejsou, vidíme na obrázku zelené dveře, umístěné na souřadnicích (2;2).
+
+<h3>Omezení</h3>
+<p>Ke každé místnosti je možno uložit jistá omezení pro její umístění ve scéně. Tato
+omezení se zadávají pomocí prázdných tagů <code class=xml>constraint</code>. Každé
+omezení má svůj typ, funkci, referenční hodnotu a hlavně skupinu místností, vůči
+které je aplikováno.
+V&nbsp;současné době jsou podporovány tyto druhy omezení:
+<dl>
+ <dt class=xml>distance</dt>
+ <dd>Vzdálenost místností. Tato vzdálenost je měřena mezi středy půdorysů a&nbsp;jako
+     jednotku má velikost čtverce (tzn. <em>nikoliv</em> metr).</dd>
+ <dt class=xml>neighbour</dt>
+ <dd>Místnosti spolu sousedí (tzn. mají společnou stěnu). Pokud spolu místnosti
+     sousedí, výsledek je 1, jinak 0.</dd>
+ <dt class=xml>connected</dt>
+ <dd>Místnosti jsou navzájem propojeny dveřmi či oknem. Pokud jsou místnosti
+     propojeny, výsledek je 1, jinak 0.</dd>
+</dl>
+<p>Každé omezení je po vyhodnocení jeho hodnoty předáno funkci, která na základě
+této hodnoty a&nbsp;také referenční hodnoty (dodané v&nbsp;atributu <code class=xml>value</code>)
+vypočítá výsledné ohodnocení, které je po vynásobení koeficientem (atribut <code class=xml>score</code>)
+přidáno k&nbsp;ohodnocení scény.
+Ve výsledku je vybrána scéna, která má nejvyšší (největší kladné, resp. nejméně záporné) ohodnocení.
+V&nbsp;současné době jsou podporovány tyto funkce:
+<dl id=funkce>
+ <dt class=xml>min</dt>
+ <dd>Minimálně. Pokud má omezení hodnotu menší než je referenční hodnota, vrací -1, jinak 0.</dd>
+ <dt class=xml>max</dt>
+ <dd>Maximálně. Pokud má omezení hodnotu vyšší než je referenční hodnota, vrací -1, jinak 0.</dd>
+ <dt class=xml>linear</dt>
+ <dd>Lineární funkce. Výsledkem je původní hodnota omezení, mínus referenční hodnota.</dd>
+ <dt class=xml>yes</dt>
+ <dd>Je pravda? Pokud je argument 0, výsledek je -1, jinak 0.</dd>
+ <dt class=xml>no</dt>
+ <dd>Je nepravda? Pokud je argument 0, výsledek je 0, jinak -1.</dd>
+ <dt class=xml>equals</dt>
+ <dd>Je rovno? Pokud je argument roven referenční hodnotě, výsledek je 0, jinak -1.</dd>
+</dl>
+
+<h2>Závěrečné poznámky</h2>
+<p>Žádné identifikátory nejsou citlivé na velikost písmen. Pokud chceme, aby jedna
+místnost patřila do dvou skupin, přímo to možné není. Můžeme ovšem vyrobit dvě místnosti
+ve dvou skupinách, které odkazují na stejný objekt (musíme je ovšem rozlišit
+atributem <a href="libxml.htm#room" class=attr>name</a>).
+
+<h2>Podrobný popis</h2>
+<p>Pokud chcete detailní informace, můžete se podívat na
+<a href="libxml.htm">podrobný popis</a>, co může soubor s&nbsp;knihovnou místností
+obsahovat.
+
+</body>
+</html>

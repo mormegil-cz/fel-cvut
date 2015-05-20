@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+  <title>Dokumentace k semestrální práci</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+  <meta name="author" content="Petr Kadlec">
+  <meta name="generator" content="HTML-Kit">
+</head>
+<body>
+<h1>Dokumentace k&nbsp;semestrální práci z&nbsp;JUI</h1>
+<p><a href="mailto:kadlecp2@fel.cvut.cz">Petr Kadlec</a>
+<h2>Soubory</h2>
+<p>Moje část práce je v&nbsp;souborech: <code>kadlecp2.lsp, Telcontar.lisp, IRS.lisp,
+utils.lisp, Sidewinder.lisp, AMRAAM.lisp, IRS_Debugger.lisp</code>, které obsahují:
+<dl>
+  <dt><code>kadlecp2.lsp</code></dt>
+  <dd>Jenom kvůli oficiální specifikaci, žádný kód neobsahuje.</dd>
+  
+  <dt><code>Telcontar.lisp</code></dt>
+  <dd>Hlavní soubor, obsahuje třídu <code>Telcontar</code>, která je mozkem postavičky.</dd>
+  
+  <dt><code>IRS.lisp</code></dt>
+  <dd>Obsahuje funkce a&nbsp;třídy pro uchovávání mapy, navigaci, apod.</dd>
+  
+  <dt><code>utils.lisp</code></dt>
+  <dd>Několik užitečných drobných funkcí univerzálnějšího charakteru.</dd>
+
+  <dt><code>Sidewinder.lisp</code></dt>
+  <dd>Obsahuje třídu pro jednoduchou střelu, umožňující střelbu do stran.</dd>
+  
+  <dt><code>AMRAAM.lisp</code></dt>
+  <dd>Obsahuje třídu pro o&nbsp;něco pokročilejší střelu, která pronásleduje zaměřenou nestvůru.</dd>
+  
+  <dt><code>IRS_Debugger.lisp</code></dt>
+  <dd>Používáno pouze pro odlaďování tříd IRS.</dd>
+</dl>
+
+<h2>Principy řešení</h2>
+<p>Třída Telcontar obsahuje instanci třídy MapaIRS, kterou používá pro uchovávání známé části mapy,
+plus informací o&nbsp;nejkratší cestě na libovolné políčko. Při každém tahu jsou do této mapy uloženy
+informace dodané ve viditelné mapě a&nbsp;přepočítány směrovací informace.
+<p>Při rozhodování o&nbsp;tom, jaký tah provést, jsou využívány funkce, začínající <code>HEUR-</code>,
+každé funkci je přiřazena priorita, nakonec je vybrán návrh té funkce, která má nejvyšší prioritu.
+Tyto funkce používají následující kritéria:
+<ul>
+<li>Pokud zbývá právě tolik tahů, kolik stačí k&nbsp;přesunu do nejbližšího východu, okamžitě se
+tam začne přesouvat (dokonce bez dalších kontrol a&nbsp;&bdquo;naslepo&ldquo;). Tato funkce je zřejmě
+zbytečná, protože v&nbsp;dodaných bludištích je dáváno 10&nbsp;000 tahů, což zřejmě vždy stačí&hellip;</li>
+ <li>Pokud stojím hned vedle nějaké nestvůry a&nbsp;mám nějaké střely, vystřel na ní (střelu Sidewinder).</li>
+ <li>Pokud rovně přede mnou vidím nestvůru a&nbsp;mám dost střel, vystřel na ní (střelu AMRAAM).</li>
+ <li>Pokud vím o&nbsp;nějakém klíči na mapě, jdu k&nbsp;němu.</li>
+ <li>Pokud mám příliš málo střel a&nbsp;vím o&nbsp;nějaké, jdu si pro ni.</li>
+ <li>Pokud vím o&nbsp;neprozkoumaném políčku, jdu k&nbsp;němu.</li>
+ <li>Pokud vím o&nbsp;východu, jdu k&nbsp;němu.</li>
+</ul>
+<p>Pokud nebyla v&nbsp;minulém kroku vygenerována &bdquo;absolutní&ldquo; odpověď, je dodaný tah
+ještě upraven:
+<ul>
+ <li>Nikdy se nechodí do strany, nebo vzad. Pokud chci jít vpravo, otočím se vpravo, abych
+ příštím tahem šel rovně.</li>
+ <li>Zkontroluje se, aby se nevešlo do střely (jelikož z&nbsp;poněkud nepochopitelných důvodů
+ je možno jeden tah vystřelit, načež pokus o&nbsp;krok stejným směrem ve druhém tahu skončí
+ kolizí s&nbsp;touto střelou, ztrátou života a&nbsp;nevykonáním kroku).</li>
+ <li>Zkontroluje se, aby se neudělal krok do těsného sousedství nestvůry.</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+ "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+  <meta name="author" content="Petr Kadlec">
+  
+  <title>Stavebnice komplexních 3D scén - formát požadavků na scénu</title>
+
+  <link rel=StyleSheet href="gm.css" type="text/css" title="Stylesheet">  
+</head>
+<body lang=cz>
+<h1>Stavebnice komplexních 3D scén &ndash; formát požadavků na scénu</h1>
+<p>Požadavky na scénu jsou ve formátu XML (<a href="scenedtd.htm">DTD tohoto formátu</a>).
+Jednotlivé tagy mají následující význam:
+
+<dl class=tags>
+
+<dt class=tag id=scenereq>scenereq</dt>
+<dd>Hlavní tag, ve kterém jsou umístěny všechny ostatní. Tag obsahuje
+  <a href="#description" class=tag>description</a>?,
+  ((<a href="#platform" class=tag>platform</a>+) | <a href="#allplatform" class=tag>allplatform</a>),
+  (<a href="#reqroom" class=tag>reqroom</a> | <a href="#allowroom" class=tag>allowroom</a>)+,
+  <a href="#constraint" class=tag>constraint</a>*
+  Atributy:
+  <dl class=atts>
+   <dt class=attr>library</dt>
+   <dd>URL <a href="libxml.htm">souboru s&nbsp;popisem knihovny</a>. Povinný atribut.</dd>
+   <dt class=attr>xsize</dt>
+   <dd>Délka půdorysu &bdquo;pozemku&ldquo; pro scénu. Povinný atribut.</dd>
+   <dt class=attr>ysize</dt>
+   <dd>Šířka půdorysu &bdquo;pozemku&ldquo; pro scénu. Povinný atribut.</dd>
+   <dt class=attr>zsize</dt>
+   <dd>Počet pater &bdquo;pozemku&ldquo; pro scénu. Implicitní hodnota 1.</dd>
+   <dt class=attr id=badscore>badscore</dt>
+   <dd>Skóre, které je považováno za nevyhovující. Pokud má řešení hodnotu stejnou
+       nebo horší, není považováno za platné řešení. Implicitní hodnota mínus nekonečno.</dd>
+   <dt class=attr id=trashscore>trashscore</dt>
+   <dd>Skóre, při kterém je současné řešení považováno za neperspektivní. Pokud
+       by umístění místnosti změnilo skóre na stejné nebo horší než <code class=attr>trashscore</code>,
+       místnost sem umístěna vůbec není. Implicitní hodnota mínus nekonečno.</dd>
+   <dt class=attr id=goodscore>goodscore</dt>
+   <dd>Skóre, které je považováno za již dostatečně kvalitní. Pokud má nalezené řešení
+       skóre stejné nebo lepší, hledání je ukončeno a lepší řešení již hledána nejsou.
+       Implicitní hodnota nula.</dd>
+  </dl>
+</dd>
+
+<dt class=tag id=description>description</dt>
+<dd>V&nbsp;tomto tagu mohou být libovolná textová data. Slouží k&nbsp;uložení nějakého
+  popisu této scény. Jelikož tento popis bude použit jako titul výsledného VRML/X3D souboru,
+  nepoužívejte zde uvozovky a&nbsp;pokuste se vejít se na jeden řádek.</dd>
+
+<dt class=tag id=platform>platform</dt>
+<dd>Tento tag obsahuje definici půdorysu jednoho patra &bdquo;pozemku&ldquo;. Tag obsahuje
+  <a href="#platformrow" class=tag>platformrow</a>*.
+  Atributy:
+  <dl class=atts>
+    <dt class=attr>level</dt>
+    <dd>Patro &bdquo;pozemku&ldquo;, které tento půdorys popisuje. Implicitní hodnota 0.</dd>
+  </dl>
+</dd>
+
+<dt class=tag id=platformrow>platformrow</dt>
+<dd>Tento tag obsahuje popis jednoho řádku půdorysu jednoho patra &bdquo;místnosti&ldquo;.
+  Tag obsahuje textová data, pro každé políčko čtvercové sítě jeden znak. Tento
+  znak může být jeden ze znaků <code class=text>x, X, 1, #, *, +</code>, pokud
+  toto políčko má být obsazeno místností, resp. jeden ze znaků
+  <code class=text>., 0, -, _,</code> <i>mezera</i>, pokud toto políčko místností obsazeno
+  být nemá.</dd>   
+
+<dt class=tag id=allplatform>allplatform</dt>
+<dd>Tento (prázdný) tag určuje, že &bdquo;pozemek&ldquo; má tvar celého kvádru
+ xsize&times;ysize&times;zsize políček.</dd>
+
+<dt class=tag id=reqroom>reqroom</dt>
+<dd>Tento (prázdný) tag popisuje jednu skupinu místností, jejíž zástupce vyžadujeme
+  umístit do scény. Atributy: 
+  <dl class=atts> 
+   <dt class=attr>name</dt>
+   <dd>Identifikátor skupiny místností. Povinný atribut.</dd>
+   <dt class=attr>min</dt>
+   <dd>Minimální počet místností této skupiny, který chceme mít ve scéně. Implicitní hodnota 1.</dd>
+   <dt class=attr>max</dt>
+   <dd>Maximální počet místností této skupiny, který dovolujeme mít ve scéně. Implicitní hodnota
+     je stejná jako hodnota atributu <code class=attr>min</code>.</dd>
+   <dt class=attr>score</dt>
+   <dd>Koeficient hodnoty omezení počtu místností této skupiny ve scéně. Implicitní hodnota nekonečno.</dd>
+  </dl> 
+</dd>
+
+<dt class=tag id=constraint>constraint</dt>
+<dd>Tento (prázdný) tag popisuje jedno omezení kladené na tuto scénu. Atributy:
+  <dl class=atts> 
+   <dt class=attr>type</dt>
+   <dd>Typ omezení. Povinný atribut. V&nbsp;současné době jsou podporovány tyto funkce:
+       <code class=xml>doorsout, windowsout, roomcount</code>.</dd>
+   <dt class=attr>function</dt>
+   <dd>Funkce hodnoty tohoto omezení. Povinný atribut. V&nbsp;současné době jsou podporovány
+       tyto funkce: <code class=xml>min, max, linear, yes, no, equals</code>.</dd>
+   <dt class=attr>value</dt>
+   <dd>Referenční hodnota pro funkci. Povinný atribut.</dd>
+   <dt class=attr>score</dt>
+   <dd>Koeficient hodnoty tohoto omezení. Implicitní hodnota nekonečno.</dd>
+  </dl>
+</dd>  
+  
+</dl>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<HTML>
+<HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html">
+  <META NAME="Author" CONTENT="Petr Kadlec">
+  <TITLE>Karel programming language documentation</TITLE>
+</HEAD>
+<BODY LANG=EN>
+
+<H1>Karel programming language documentation</H1>
+
+<H2>Overview</H2>
+<P>This document describes Karel, a simple programming language intended for basic
+programming education. For further info about the language, see the book &ldquo;Karel the Robot&rdquo;,
+by Richard E. Pattis. Every Karel program specifies what should a simple robot,
+called Karel (named after Karel &#x10C;apek, a Czech writer, who has invented
+the word &ldquo;robot&rdquo;) do in a city, consisting of regular square grid. In each grid
+cell can be a wall or an empty field. Karel has a backpack, in which he can
+keep any number of beepers, which can also be placed on empty city cells.
+
+<H2>A simple example program</H2>
+<P><CODE><PRE>
+BEGINNING-OF-PROGRAM
+
+ DEFINE turnright AS
+ BEGIN
+   turnleft
+   turnleft
+   turnleft
+ END
+
+ BEGINNING-OF-EXECUTION
+   ITERATE 3 TIMES
+     turnright
+
+   turnoff
+ END-OF-EXECUTION
+
+END-OF-PROGRAM
+</PRE></CODE>
+
+<H2>Basic syntax</H2>
+<P>A Karel program contains a main executable part and a list of new instructions.
+It has the following form:
+<CODE><PRE>
+BEGINNING-OF-PROGRAM
+
+ new instructions
+
+ BEGINNING-OF-EXECUTION
+  main executable code
+ END-OF-EXECUTION
+
+END-OF-PROGRAM
+</PRE></CODE>
+Where new instruction is the list of definitions of the following form:
+<CODE><PRE>
+DEFINE-NEW-INSTRUCTION instruction-name AS
+BEGIN
+  instruction code
+END
+</PRE></CODE>
+<P>The programming language is case-insensitive, i.e. <CODE>BEGIN</CODE>,
+<CODE>Begin</CODE>, and <CODE>begin</CODE> are all the same to the compiler.
+
+<H2>Syntactical elements</H2>
+
+<H3>Control statements</H3>
+<P>In the instruction code and in the main executable code, four control statements,
+built-in instructions and user-defined instructions may occur. The control
+statements are:
+
+<H4>Iteration</H4>
+<P>The statement <CODE>ITERATE <I>number</I> TIMES <I>statement</I></CODE>
+means to repeat the <I>statement number</I> times.
+
+<H4>Loop</H4>
+<P>The statement <CODE>WHILE <I>condition</I> DO <I>statement</I></CODE> means to
+check if the <I>condition</I> is true, and if it is, to execute the
+<I>statement</I>. Then again to check the <I>condition</I>, and do this
+while the condition is true.
+
+<H4>Conditional</H4>
+<P>The statement <CODE>IF <I>condition</I> THEN <I>statement1</I></CODE>, or in the
+full form, <CODE>IF <I>condition</I> THEN <I>statement1</I> ELSE <I>statement2</I></CODE>
+means to check if the <I>condition</I> is true, then if it is, to execute
+<I>statement1</I>, or if it is false, to execute <I>statement2</I> (if it is
+present, otherwise, do nothing).
+
+<H4>Block</H4>
+<P>If somewhere you need to specify more statements in place of one (in iteration,
+loop, or conditional), you enclose the statements into <CODE>BEGIN</CODE> and
+<CODE>END</CODE>. For example,
+<CODE>IF <I>condition</I> THEN BEGIN <I>statement1 statement2</I> END</CODE>
+
+<H3>Conditions</H3>
+<P>In the loop and conditional statements, a condition field occurs. The
+condition is one of the following:
+<TABLE SUMMARY="conditions">
+<THEAD>
+<TR><TD><B>Condition</B></TD><TD><B>is true, if...</B></TD></TR>
+</THEAD>
+<TBODY>
+<TR><TD>FRONT-IS-CLEAR</TD><TD>the field before Karel is clear</TD></TR>
+<TR><TD>FRONT-IS-BLOCKED</TD><TD>the field before Karel is blocked</TD></TR>
+<TR><TD>LEFT-IS-CLEAR</TD><TD>the field on the left hand side of Karel is clear</TD></TR>
+<TR><TD>LEFT-IS-BLOCKED</TD><TD>the field on the left hand side of Karel is blocked</TD></TR>
+<TR><TD>RIGHT-IS-CLEAR</TD><TD>the field on the right hand side of Karel is clear</TD></TR>
+<TR><TD>RIGHT-IS-BLOCKED</TD><TD>the field on the right hand side of Karel is blocked</TD></TR>
+<TR><TD>BACK-IS-CLEAR</TD><TD>the field behind Karel is clear</TD></TR>
+<TR><TD>BACK-IS-BLOCKED</TD><TD>the field behind Karel is blocked</TD></TR>
+<TR><TD>NEXT-TO-A-BEEPER</TD><TD>the field on which Karel is, contains a beeper</TD></TR>
+<TR><TD>NOT-NEXT-TO-A-BEEPER</TD><TD>the field on which Karel is, does not contain a beeper</TD></TR>
+<TR><TD>ANY-BEEPERS-IN-BEEPER-BAG</TD><TD>Karel has at least one beeper in his bag</TD></TR>
+<TR><TD>NO-BEEPERS-IN-BEEPER-BAG</TD><TD>Karel has no beepers in his bag</TD></TR>
+<TR><TD>FACING-NORTH</TD><TD>Karel is facing towards north</TD></TR>
+<TR><TD>NOT-FACING-NORTH</TD><TD>Karel is not facing towards north</TD></TR>
+<TR><TD>FACING-SOUTH</TD><TD>Karel is facing towards south</TD></TR>
+<TR><TD>NOT-FACING-SOUTH</TD><TD>Karel is not facing towards south</TD></TR>
+<TR><TD>FACING-EAST</TD><TD>Karel is facing towards east</TD></TR>
+<TR><TD>NOT-FACING-EAST</TD><TD>Karel is not facing towards east</TD></TR>
+<TR><TD>FACING-WEST</TD><TD>Karel is facing towards west</TD></TR>
+<TR><TD>NOT-FACING-WEST</TD><TD>Karel is not facing towards west</TD></TR>
+</TBODY></TABLE>
+
+<H3>Built-in instructions</H3>
+<TABLE SUMMARY="built-in instructions">
+<TR><TD>MOVE</TD><TD>Karel moves a step in the direction he is facing</TD></TR>
+<TR><TD>TURNLEFT</TD><TD>Karel turns 90 degress in the counterclockwise direction</TD></TR>
+<TR><TD>PICKBEEPER</TD><TD>Karel picks one beeper from the field he is on, and puts it in his bag</TD></TR>
+<TR><TD>PUTBEEPER</TD><TD>Karel gets one beeper from his bag and puts it onto the field he is on</TD></TR>
+<TR><TD>TURNOFF</TD><TD>Karel turns himself off, the program stops (it is required for the program to terminate with this instruction!)</TD></TR>
+</TABLE>
+
+<H2>Formal syntax</H2>
+<P>For completeness, the complete formal syntax of the Karel programming language
+is as follows:</P>
+
+<TABLE SUMMARY="Formal syntax" STYLE="font-family: Courier New, monospace">
+<TR><TD>program</TD><TD>::=</TD><TD><B>BEGINNING-OF-PROGRAM</B> definition* <B>BEGINNING-OF-EXECUTION</B> <I>statement</I>* <B>END-OF-EXECUTION END-OF-PROGRAM</B></TD></TR>
+<TR><TD>definition</TD><TD>::=</TD><TD><B>DEFINE-NEW-INSTRUCTION</B> identifier <B>AS</B> statement</TD></TR>
+<TR><TD>statement</TD><TD>::=</TD><TD>block | iteration | loop | conditional | instruction</TD></TR>
+<TR><TD>block</TD><TD>::=</TD><TD><B>BEGIN</B> statement* <B>END</B></TD></TR>
+<TR><TD>iteration</TD><TD>::=</TD><TD><B>ITERATE</B> number <B>TIMES</B> statement</TD></TR>
+<TR><TD>loop</TD><TD>::=</TD><TD><B>WHILE</B> condition <B>DO</B> statement</TD></TR>
+<TR><TD>conditional</TD><TD>::=</TD><TD><B>IF</B> condition <B>THEN</B> statement [ <B>ELSE</B> statement ]</TD></TR>
+<TR><TD>instruction</TD><TD>::=</TD><TD><B>MOVE</B> | <B>TURNLEFT</B> | <B>PICKBEEPER</B> | <B>PUTBEEPER</B> | <B>TURNOFF</B> | identifier</TD></TR>
+<TR><TD>condition</TD><TD>::=</TD><TD>
+  <B>FRONT-IS-CLEAR</B> |
+  <B>FRONT-IS-BLOCKED</B> |
+  <B>LEFT-IS-CLEAR</B> |
+  <B>LEFT-IS-BLOCKED</B> |
+  <B>RIGHT-IS-CLEAR</B> |
+  <B>RIGHT-IS-BLOCKED</B> |
+  <B>BACK-IS-CLEAR</B> |
+  <B>BACK-IS-BLOCKED</B> |
+  <B>NEXT-TO-A-BEEPER</B> |
+  <B>NOT-NEXT-TO-A-BEEPER</B> |
+  <B>ANY-BEEPERS-IN-BEEPER-BAG</B> |
+  <B>NO-BEEPERS-IN-BEEPER-BAG</B> |
+  <B>FACING-NORTH</B> |
+  <B>NOT-FACING-NORTH</B> |
+  <B>FACING-SOUTH</B> |
+  <B>NOT-FACING-SOUTH</B> |
+  <B>FACING-EAST</B> |
+  <B>NOT-FACING-EAST</B> |
+  <B>FACING-WEST</B> |
+  <B>NOT-FACING-WEST</B></TD></TR>
+<TR><TD>identifier</TD><TD>::=</TD><TD>letter ( letter | digit )*</TD></TR>
+<TR><TD>number</TD><TD>::=</TD><TD>digit+</TD></TR>
+<TR><TD>letter</TD><TD>::=</TD><TD>'<B>A</B>' | '<B>B</B>' | ... | '<B>Z</B>' | '<B>-</B>'</TD></TR>
+<TR><TD>digit</TD><TD>::=</TD><TD>'<B>0</B>' | ... | '<B>9</B>'</TD></TR>
+</TABLE>
+
+</BODY>
+</HTML>

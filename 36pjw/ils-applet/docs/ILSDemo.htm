@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+ <TITLE>ILSDemo - applet documentation</TITLE>
+</HEAD>
+<BODY>
+
+<H1>ILS Demonstration</H1>
+<P>Copyright &copy; 2001 by <A HREF="mailto:kadlecp2@fel.cvut.cz">Petr Kadlec</A>
+
+<H2>User documentation</H2>
+
+<P>The applet contains three parts: A horizontal map at the top, a vertical map in the middle,
+and an instrument panel at the bottom.
+
+<P>The horizontal map displays a part of a real-world ILS approach chart with an airport, which
+has an ILS-equipped runway. On the map, an icon of an airplane is drawn, that can be controlled
+by the user (see below).
+
+<P>The vertical map displays another part of the approach chart. It displays the approach path
+from side. Also on this map, an icon of the airplane is drawn.
+
+<P>The instrument panel contains (left-to-right):
+<UL>
+<LI><B>Horizontal Situation Indicator</B> (HSI), which indicates the position of the airplane
+relative to the ILS beams and includes a (gyro-) compass</LI>
+<LI>(Barometric) <B>Altimeter</B>, which indicates current altitude of the airplane in feet
+above mean sea level (if properly set). It has three needles: The biggest one shows hundreds,
+the short one shows thousands, and the long thin one with a triangle on one end shows tens of
+thousands of feet.</LI>
+<LI><B>Marker indicators</B> - The respective light is lit when the airplane is flying over
+a marker. A respective sound is also played in that moment (if your computer is capable of
+that, of course).</LI>
+<LI><B>DME display</B>, which shows current distance of the airplane from the DME transmitter
+(in nautical miles, 1&nbsp;nm&nbsp;=&nbsp;1852&nbsp;meters&nbsp;=&nbsp;1.15&nbsp;statute mile).
+(In reality, the DME display usually also displays a speed of the airplane, and sometimes also
+an estimate of time required to reach the navaid.)</LI>
+</UL>
+
+<H3>Controlling the airplane</H3>
+
+<P>You can control the airplane in a way that partly imitates the real world flying. If you
+press left or right arrow, the airplane turns left or right, respectively. If you press up
+or down arrow, the airplane nose lowers down, or raises up, as it would move if you would push
+the control wheel in a real airplane in the same direction. Then, if you press space, the
+airplane moves a bit forward.
+
+<P>The objective is to keep the airplane on the proper aproach path and to "land" the airplane
+correctly on the runway. You should be able to do that only by looking on the instruments, not
+on maps! It is the reason you use ILS - you do not see anything other than your instruments in
+bad weather!
+
+<P>If you want to experiment of what the instruments would display in some point of the map,
+you could also click with the left mouse button on the point on the upper map. With the
+right mouse button you turn the airplane. A click with the left button on the lower map changes
+the airplane's altitude. A right mouse click on the lower map changes the airplane's pitch.
+
+<H2>Applet requirements</H2>
+
+<P>The applet requires that the browser supports Java 2 API. This support is not usually present
+in the default Java VM installation in Microsoft Internet Explorer. You have to upgrade your
+Java Runtime Environment or use a better browser.
+
+<P>If you want to hear the marker indication sounds, Java implementation in your browser must
+support WAVE audioclips, and your computer must have a properly configured sound card.
+
+<H2>Including the applet on a HTML page</H2>
+
+<P>If you want to include the applet on your page, you have to add the following tag to your
+html code:
+
+<P><CODE><PRE>
+&lt;APPLET
+  CODE     = "ils/ILSDemo.class"
+  NAME     = "ILSDemo"
+  WIDTH    = 532
+  HEIGHT   = 556
+  HSPACE   = 0
+  VSPACE   = 0
+  ALIGN    = top
+&gt;
+&lt;/APPLET&gt;
+</PRE></CODE>
+
+<P>In the <CODE>CODEBASE</CODE> property, you can set a location from which the applet
+(the classes and media files) will be downloaded. You should not change the <CODE>WIDTH</CODE>
+and <CODE>HEIGHT</CODE> properties, since the applet has fixed size.
+
+<P>If you use this applet on your pages, don't forget to mention me as the author!
+
+</BODY>
+</HTML>

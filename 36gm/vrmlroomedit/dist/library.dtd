@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!--
+	Library DTD v1.0
+	(C) 2002, Petr Kadlec (kadlecp2@fel.cvut.cz)
+-->
+
+
+<!-- "library" is the parent element -->
+<!ELEMENT library (description?,room*)>
+<!ATTLIST library
+	URL	CDATA	#REQUIRED
+	xscale	CDATA	'1'
+	yscale	CDATA	#IMPLIED
+	zscale	CDATA	#IMPLIED
+>
+
+
+<!-- "room" specifies a single room -->
+<!ELEMENT room (description?,((platform+)|allplatform),portal*,constraint*)>
+<!ATTLIST room
+	object	CDATA 	#REQUIRED
+	name	CDATA	#IMPLIED
+	group	CDATA	#IMPLIED
+	xsize	CDATA	#REQUIRED
+	ysize	CDATA	#REQUIRED
+	zsize	CDATA	'1'
+>
+
+
+<!-- "description" contains pure textual description of a room or the whole library -->
+<!ELEMENT description (#PCDATA)*>
+
+
+<!-- "platform" contains matrix of platform specification for a room -->
+<!ELEMENT platform (platformrow+)>
+<!ATTLIST platform level CDATA '0'>
+
+
+<!-- "platformrow" specifies a single row of platform matrix -->
+<!ELEMENT platformrow (#PCDATA)*>
+
+
+<!-- "allplatform" specifies the whole platform -->
+<!ELEMENT allplatform EMPTY>
+
+
+<!-- "portal" specifies a single portal -->
+<!ELEMENT portal EMPTY>
+<!ATTLIST portal
+	type	CDATA	#REQUIRED
+	kind	CDATA	#REQUIRED
+	xpos	CDATA	#REQUIRED
+	ypos	CDATA	#REQUIRED
+	zpos	CDATA	'0'
+>
+
+
+<!-- "constraint" provides one constraint for the room -->
+<!ELEMENT constraint EMPTY>
+<!ATTLIST constraint
+	type		CDATA	#REQUIRED
+	function	CDATA	#REQUIRED
+	value		CDATA	#IMPLIED
+	from		CDATA	#REQUIRED
+	score		CDATA	#IMPLIED
+>

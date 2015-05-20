@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html">
+  <META NAME="Author" CONTENT="Petr Kadlec">
+  <TITLE>Karel Compiler</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Karel Compiler</H1>
+
+<H2>Overview</H2>
+<P>This document describes the Karel compiler, which is a Java application that
+compiles programs written in the Karel programming language to Java class files
+that can be run on any computer with Java Virtual Machine.
+
+<H2>Usage</H2>
+<P>The program source is compiled with the following command:
+<PRE><CODE>java -jar Karel.jar <VAR>sourcefile destclass</VAR></PRE></CODE>
+Where <VAR>sourcefile</VAR> is name of the file containing source text of your
+Karel program and destclass is name you have chosen for the class which will
+be created from the Karel source. The file which will be created, will have the
+name <CODE><VAR>destclass</VAR>.class</CODE>
+
+<H2>Running Karel programs</H2>
+<P>The resulting class file is a standard Java class file, i.e. to start the
+program, use <CODE>java <VAR>destclass</VAR></CODE> as in case of any other Java
+program. You only have to enable the Java runtime environment to find
+<CODE>karel.common</CODE> and <CODE>karel.city</CODE> packages.
+
+</BODY>
+</HTML>

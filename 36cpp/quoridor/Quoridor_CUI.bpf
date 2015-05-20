@@ -1,0 +1,10 @@
+USEUNIT("Quoridor_Console.cpp");
+USEUNIT("Player_HumanConsole.cpp");
+USEUNIT("GameCore.cpp");
+USEUNIT("AI.cpp");
+USEUNIT("Clock.cpp");
+USERES("Quoridor_CUI.res");
+//---------------------------------------------------------------------------
+This file is used by the project manager only and should be treated like the project file
+
+main
