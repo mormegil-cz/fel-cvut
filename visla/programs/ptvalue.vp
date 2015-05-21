@@ -1,0 +1,68 @@
+!!ARBvp1.0
+
+#*  Visla -- Visualisation Library for Accelerators
+#*
+#*  Copyright (C) 2003  Petr Kadlec <mormegil@centrum.cz>
+#*
+#*  This library is free software; you can redistribute it and/or
+#*  modify it under the terms of the GNU Lesser General Public
+#*  License as published by the Free Software Foundation; either
+#*  version 2.1 of the License, or (at your option) any later version.
+#*
+#*  This library is distributed in the hope that it will be useful,
+#*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#*  Lesser General Public License for more details.
+#*
+#*  You should have received a copy of the GNU Lesser General Public
+#*  License along with this library; if not, write to the Free Software
+#*  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+# This vertex program computes the texture coordinate from the scalar value
+# associated with every vertex.
+# It also does the basic functions:
+#   - transforms vertices to homogenous clip space
+#
+# Constant memory data:
+# c[0]...c[3]      contains the modelview projection composite matrix
+# c[4]             x contains the lower bound of scalar values, y contains 1/(upper - lower)
+# c[5]             contains some useful constants {0, 0.5, 1.0, 2.0}
+#
+# Per-Vertex Attribute data:
+# v[OPOS] contains the per-vertex position
+# v[TEX0] x contains the per-vertex scalar value
+# v[COL0] contains the per-vertex color
+#
+# Relevant Output registers:
+# o[HPOS] output register for homogeneous position
+# o[TEX0] output register for texture coordinate 0
+# o[COL0] output register for primary color
+#
+# Temporary Registers:
+# R0
+
+TEMP R0;
+
+ATTRIB vPos = vertex.position;
+ATTRIB vTex0 = vertex.texcoord[0];
+ATTRIB vCol0 = vertex.color;
+
+PARAM cMatrix[4] = { program.local[0..3] };
+PARAM cRange = program.local[4];
+PARAM cConsts = program.local[5];
+
+# Transform vertices to homogenous clip space
+DP4   R0.x, cMatrix[0], vPos;
+DP4   R0.y, cMatrix[1], vPos;
+DP4   R0.z, cMatrix[2], vPos;
+DP4   R0.w, cMatrix[3], vPos;
+MOV   result.position, R0;
+
+# Compute the texture coordinate
+ADD   R0.x, vTex0.x, -cRange.x;
+MUL   result.texcoord[0].x, R0.x, cRange.y;
+
+# Transfer the primary color
+MOV   result.color.front.primary, vCol0;
+
+END

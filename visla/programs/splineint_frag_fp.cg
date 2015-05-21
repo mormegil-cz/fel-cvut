@@ -1,0 +1,44 @@
+/*  Visla -- Visualisation Library for Accelerators
+ *
+ *  Copyright (C) 2003  Petr Kadlec <mormegil@centrum.cz>
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2.1 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+
+float4 frag_main (
+                  float4 relpos : TEXCOORD0,
+                  uniform float4x4 splinematrix,
+                  uniform sampler2D valuetex,
+                  uniform float4 color
+                  ) : COLOR
+{
+    float4 xvec, yvec;
+    xvec.x = 1.0f;
+    xvec.y = relpos.x;
+    xvec.z = xvec.y * xvec.y;
+    xvec.w = xvec.z * xvec.y;
+    
+    yvec.x = 1.0f;
+    yvec.y = relpos.y;
+    yvec.z = yvec.y * yvec.y;
+    yvec.w = yvec.z * yvec.y;
+
+    float value = dot(mul(splinematrix, xvec), yvec);
+
+    float4 result = f4tex2D(valuetex, float2(value, 0.0f));
+    result.a = color.a;
+    return result;
+}

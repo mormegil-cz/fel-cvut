@@ -1,0 +1,46 @@
+/*  Visla -- Visualisation Library for Accelerators
+ *
+ *  Copyright (C) 2003  Petr Kadlec <mormegil@centrum.cz>
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2.1 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+
+struct app2vert {
+    float4 relpos : POSITION;
+};
+
+struct vert2frag {
+    float4 hpos   : HPOS;
+    float4 relpos : TEXCOORD0;
+    //float4 color  : COL0;
+};
+
+vert2frag vert_main(
+                    app2vert         IN,
+                    uniform float4x4 modelviewproj,
+                    uniform float4   quadorigin,
+                    uniform float4   quadsize
+                    )
+{
+    vert2frag OUT;
+    
+    OUT.relpos = IN.relpos;
+    float4 pos = quadorigin + IN.relpos * quadsize;
+    OUT.hpos = mul(modelviewproj, pos);
+    //OUT.color = 1.0f;
+
+    return OUT;
+}
