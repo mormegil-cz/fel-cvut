@@ -17,6 +17,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 #include <errno.h>
 
@@ -394,7 +395,7 @@ void load_texture(char *filename, GLuint texname)
 void load_data(void)
 {
     FILE *fd;
-    int i, j;
+    int i;
     char texname[256];
     p_vector2 p2;
     p_vector3 p3;

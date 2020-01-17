@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     if (argc > 11) rooftexmin = atoi(argv[11]);
     if (argc > 12) rooftexmax = atoi(argv[12]);
     if (argc > 13) {
-        printf("Usage: %s xsize ysize bx by sx sy hmin hmax texmin texmax rooftexmin rooftexmax\n");
+        printf("Usage: %s xsize ysize bx by sx sy hmin hmax texmin texmax rooftexmin rooftexmax\n", argv[0]);
         return 2;
     }
     blockx = bx + sx;

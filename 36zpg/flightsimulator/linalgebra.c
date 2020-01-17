@@ -61,7 +61,7 @@ p_vector3 normalize(p_vector3 vector) {
   float length;
   length = sqrt( (vector->x * vector->x) + (vector->y * vector->y) + (vector->z * vector->z) );
   /*printf("%.2f %.2f %.2f\n",vector->x, vector->y, vector->z);*/
-  assert( abs(length) > ALGEBRA_EPSILON );
+  assert( fabs(length) > ALGEBRA_EPSILON );
   vector->x /= length;
   vector->y /= length;
   vector->z /= length;

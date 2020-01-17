@@ -2,14 +2,14 @@ OBJS   = main.o linalgebra.o sgi.o
 PROGS  = zpg
 CC     = gcc
 LIBS   = -lGL -lGLU -lglut -lm
-CCOPTS = $(LIBS) -g
+CCOPTS = -g -Wall
 
 
 zpg: Makefile $(OBJS)
-	$(CC) $(CCOPTS) $(OBJS) -o $@
+	$(CC) $(OBJS) $(CCOPTS) $(LIBS) -o $@
 
 mkcity: Makefile mkcity.o
-	$(CC) $(CCOPTS) mkcity.o -o $@
+	$(CC) mkcity.o $(CCOPTS) $(LIBS) -o $@
 
 linalgebra.o: linalgebra.c linalgebra.h
 	$(CC) $(CCOPTS) -c linalgebra.c
